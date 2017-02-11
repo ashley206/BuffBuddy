@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">BuffBuddy</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_firstName">First Name</string>
+    <string name="prompt_lastName">Last Name</string>
+    <string name="prompt_confirmPassword">Confirm Password</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_exName">Exercise Name</string>
+    <string name="prompt_exSets">Sets</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string-array name="targetMuscles">
+        <item>Quadriceps</item>
+        <item>Pectorals</item>
+        <item>Medial Deltoids</item>
+        <item>Posterior Deltoids</item>
+        <item>Anterior Deltoids</item>
+        <item>Back</item>
+        <item>Lower Back</item>
+        <item>Biceps</item>
+        <item>Triceps</item>
+        <item>Hamstrings</item>
+        <item>Glutes</item>
+        <item>Calves</item>
+        <item>Trapezius</item>
+        <item>Obliques</item>
+        <item>Abdominals</item>
+    </string-array>
+</resources>
