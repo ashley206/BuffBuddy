@@ -22,8 +22,10 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".AddExerciseActivity"></activity>
-        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".AddExerciseActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".SelectWorkout" />
+        <activity android:name=".CreateWorkout"></activity>
     </application>
 
 </manifest>

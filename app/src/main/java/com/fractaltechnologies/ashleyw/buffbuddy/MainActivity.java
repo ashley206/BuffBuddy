@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         }
         Button bttnLogin = (Button)findViewById(R.id.bttnLogin);
         Button bttnRegister = (Button)findViewById(R.id.bttnRegister);
-        Button bttnAddExercise = (Button)findViewById(R.id.bttnAddExercise);
 
         bttnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,12 +109,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        bttnAddExercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AddExerciseActivity.class));
-            }
-        });
     }
 
     private static boolean doesDatabaseExist(Context context, String dbName) {

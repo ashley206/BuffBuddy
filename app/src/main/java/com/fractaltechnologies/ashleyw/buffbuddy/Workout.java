@@ -1,5 +1,6 @@
 package com.fractaltechnologies.ashleyw.buffbuddy;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -10,14 +11,14 @@ import java.util.Vector;
 
 public class Workout {
     private String m_name;
-    private List<Exercise> m_exercises;
+    private ArrayList<Exercise> m_exercises;
 
     public Workout(String name){
         m_name = name;
-        m_exercises = new Vector<Exercise>();
+        m_exercises = new ArrayList<Exercise>();
     }
 
-    public Workout(String name, List<Exercise> exercises){
+    public Workout(String name, ArrayList<Exercise> exercises){
         m_name = name;
         m_exercises = exercises;
     }
@@ -30,11 +31,11 @@ public class Workout {
         m_name = name;
     }
 
-    public List<Exercise> GetExercises(){
+    public ArrayList<Exercise> GetExercises(){
         return this.m_exercises;
     }
 
-    public void SetExercises(List<Exercise> exercises){
+    public void SetExercises(ArrayList<Exercise> exercises){
         m_exercises = exercises;
     }
 

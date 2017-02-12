@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -113,18 +114,17 @@ public class DBAdapter {
         return success;
     }
 
-// TODO: implement a do{} while(c.movetonext())
-    public List<Workout> FetchAll(){
+    public ArrayList<Workout> FetchAll(){
         SQLiteDatabase db = new SQLiteHelper(m_context, DB_NAME, null, DB_VERSION).getReadableDatabase();
         String sql = "SELECT * FROM WORKOUT";
         Cursor c = db.rawQuery(sql, null);
         c.moveToFirst();
-        List<Workout> workouts = new Vector<Workout>();
+        ArrayList<Workout> workouts = new ArrayList<Workout>();
         // TODO: Check that this doesn't move to the next one right away
-        while(c.moveToNext()){
+        do{
             // TODO: How do we retrieve the Exercises associated?
             workouts.add(new Workout(c.getString(c.getColumnIndex("NAME"))));
-        }
+        }while(c.moveToNext());
         c.close();
         return workouts;
     }
