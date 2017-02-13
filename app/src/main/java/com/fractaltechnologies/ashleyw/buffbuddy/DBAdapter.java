@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -58,8 +59,8 @@ public class DBAdapter {
         ContentValues values = new ContentValues();
         values.put("NAME", ex.getName());
         values.put("SETS", ex.getSets());
-        values.put("PRIMARY_TARGET_MUSCLE", (ex.getTargetMuscles()).get(0).toString());
-        values.put("SECONDARY_TARGET_MUSCLE", (ex.getTargetMuscles()).get(1).toString());
+        values.put("PRIMARY_TARGET_MUSCLE", ex.getPrimaryTargetMuscle().toString());
+        values.put("SECONDARY_TARGET_MUSCLE", ex.getSecondaryTargetMuscle().toString());
         for (int i = 0; i < ex.getReps().size(); i++) {
             values.put("REP" + i, ex.getReps().get(i));
         }
@@ -114,33 +115,16 @@ public class DBAdapter {
         return success;
     }
 
-    public ArrayList<Workout> FetchAll(){
-        SQLiteDatabase db = new SQLiteHelper(m_context, DB_NAME, null, DB_VERSION).getReadableDatabase();
-        String sql = "SELECT * FROM WORKOUT";
-        Cursor c = db.rawQuery(sql, null);
-        c.moveToFirst();
-        ArrayList<Workout> workouts = new ArrayList<Workout>();
-        // TODO: Check that this doesn't move to the next one right away
-        do{
-            // TODO: How do we retrieve the Exercises associated?
-            workouts.add(new Workout(c.getString(c.getColumnIndex("NAME"))));
-        }while(c.moveToNext());
-        c.close();
-        return workouts;
+    public void Create(String tableName, ContentValues values){
+        db.insert(tableName, null, values);
     }
 
-    public List<Workout> FetchByName(String name){
-        SQLiteDatabase db = new SQLiteHelper(m_context, DB_NAME, null, DB_VERSION).getReadableDatabase();
-        String sql = "SELECT * FROM WORKOUT WHERE NAME = ?";
-        Cursor c = db.rawQuery(sql, new String [] {name});
-        c.moveToFirst();
-        List<Workout> workouts = new Vector<Workout>();
-        // TODO: Check that this doesn't move to the next one right away
-        while(c.moveToNext()){
-            // TODO: How do we retrieve the Exercises associated?
-            workouts.add(new Workout(c.getString(c.getColumnIndex("NAME"))));
-        }
-        c.close();
-        return workouts;
+    public void Update(String tableName, ContentValues values, String whereClause, String [] whereArgs){
+        db.update(tableName, values, whereClause, whereArgs);
     }
+
+    public void Delete(String tableName, String whereClause, String [] whereArgs){
+        db.delete(tableName, whereClause, whereArgs);
+    }
+
 }

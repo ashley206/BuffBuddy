@@ -3,8 +3,8 @@ package com.fractaltechnologies.ashleyw.buffbuddy;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -20,13 +20,12 @@ public class ExerciseDAO implements IDAO<Exercise> {
     DBAdapter db;
 
     @Override
-    public void Create(Exercise e, Context c){
+    public void Create(Exercise exercise, Context context){
 
-        ContentValues values = getValues(e);
+        ContentValues values = getValues(exercise);
         try {
-            db = new DBAdapter(c);
-            db.openWrite();
-            db.getDBInstance().insert("EXERCISE", null, values);
+            db = new DBAdapter(context);
+            db.openWrite().Create("EXERCISE", values);
         }catch (SQLiteException ex){
             Log.e("TAG", "EXCEPTION MESSAGE: " + ex.getMessage());
             db.close();
@@ -35,13 +34,12 @@ public class ExerciseDAO implements IDAO<Exercise> {
     }
 
     @Override
-    public void Update(Exercise e, Context c){
-        ContentValues values = getValues(e);
+    public void Update(Exercise exercise, Context context){
+        ContentValues values = getValues(exercise);
         try{
-            db = new DBAdapter(c);
-            db.openWrite();
-            String selectionArgs[] = { String.valueOf(e.getID()) };
-            db.getDBInstance().update("EXERCISE", values, " ID = ?", selectionArgs);
+            db = new DBAdapter(context);
+            String selectionArgs[] = { String.valueOf(exercise.getID()) };
+            db.openWrite().Update("EXERCISE", values, " ID = ?", selectionArgs);
         }
         catch (SQLiteException ex){
             Log.e("TAG", "EXCEPTION MESSAGE: " + ex.getMessage());
@@ -51,13 +49,13 @@ public class ExerciseDAO implements IDAO<Exercise> {
     }
 
     @Override
-    public void Delete(Exercise e, Context c){
-        ContentValues values = getValues(e);
+    public void Delete(Exercise exercise, Context context){
+        ContentValues values = getValues(exercise);
         try{
-            db = new DBAdapter(c);
+            db = new DBAdapter(context);
             db.openWrite();
-            String selectionArgs[] = { String.valueOf(e.getID()) };
-            db.getDBInstance().delete("EXERCISE", " ID = ?", selectionArgs);
+            String whereArgs[] = { String.valueOf(exercise.getID()) };
+            db.openWrite().Delete("EXERCISE", " ID = ?", whereArgs);
         }
         catch (SQLiteException ex){
             Log.e("TAG", "EXCEPTION MESSAGE: " + ex.getMessage());
@@ -65,63 +63,70 @@ public class ExerciseDAO implements IDAO<Exercise> {
         }
         db.close();
     }
+
     @Override
-    public List<Exercise> FindByName(String name){
-        List<Exercise> exercises = new Vector<Exercise>();
-//        try{
-//            // TODO: New DBAdapter here
-//            db.openRead();
-//            Cursor c = db.getDBInstance().rawQuery("SELECT * FROM EXERCISE", null);
-//            Exercise ex;
-//            if(c.moveToFirst()) {
-//                do {
-//                    List<Integer> i = new ArrayList<Integer>();
-//                    i.add(Integer.parseInt(c.getString(c.getColumnIndex("REP1"))));
-//                    i.add(Integer.parseInt(c.getString(c.getColumnIndex("REP2"))));
-//                    i.add(Integer.parseInt(c.getString(c.getColumnIndex("REP3"))));
-//                    i.add(Integer.parseInt(c.getString(c.getColumnIndex("REP4"))));
-//                    i.add(Integer.parseInt(c.getString(c.getColumnIndex("REP5"))));
-//                    i.add(Integer.parseInt(c.getString(c.getColumnIndex("REP6"))));
-//
-//                    List<TargetMuscle> m = new ArrayList<TargetMuscle>();
-//                    // TODO: Need to convert these back to TargetMuscles
-//                    //m.add(c.getString(c.getColumnIndex("PRIMARY_TARGET_MUSCLE")));
-//                    //m.add(c.getString(c.getColumnIndex("PRIMARY_TARGET_MUSCLE")));
-////                    ex = new Exercise(
-////                    c.getString(c.getColumnIndex("NAME")),
-////                            c.getString(c.getColumnIndex("SETS")),
-////                            i,
-//
-//
-//
-//                    );
-//                }while(c.moveToNext());
-//            }
-//
-//        }catch (SQLiteException ex){
-//            Log.e("TAG", "EXCEPTION MESSAGE: " + ex.getMessage());
-//            db.close();
-//        }
-//        db.close();
+    public List<Exercise> FindByName(String name, Context context){
+        DBAdapter dbAdapter = new DBAdapter(context);
+        String sql = "SELECT * FROM EXERCISE WHERE NAME = ?";
+        Cursor c = dbAdapter.openRead().getDBInstance().rawQuery(sql, new String [] { name });
+        ArrayList<Exercise> exercises = new ArrayList<Exercise>();
+        if(c.moveToFirst()) {
+            ArrayList<Integer> reps = new ArrayList<Integer>();
+            do {
+                for (int i = 0; i < 6; i++) {
+                    reps.add(Integer.parseInt(c.getString(c.getColumnIndex("REP" + String.valueOf(i)))));
+                }
+                Exercise exercise = new Exercise(c.getString(c.getColumnIndex("NAME")),
+                        reps,
+                        Integer.parseInt(c.getString(c.getColumnIndex("SETS"))),
+                        TargetMuscle.valueOf(c.getString(c.getColumnIndex("PRIMARY_TARGET_MUSCLE"))),
+                        TargetMuscle.valueOf(c.getString(c.getColumnIndex("SECONDARY_TARGET_MUSCLE"))),
+                        Integer.parseInt(c.getString(c.getColumnIndex("WORKOUT_ID")))
+                );
+                exercises.add(exercise);
+                reps.clear();
+            } while (c.moveToNext());
+        }
+        c.close();
         return exercises;
     }
-    @Override
-    public List<Exercise> FetchAll(){
-        List<Exercise> exercises = new Vector<Exercise>();
 
+    @Override
+    public ArrayList<Exercise> FetchAll(Context context){
+        String sql = "SELECT * FROM WORKOUT";
+        DBAdapter dbAdapter = new DBAdapter(context);
+        Cursor c = dbAdapter.openRead().getDBInstance().rawQuery(sql, null);
+        ArrayList<Exercise> exercises = new ArrayList<Exercise>();
+        if(c.moveToFirst()) {
+            ArrayList<Integer> reps = new ArrayList<Integer>();
+            do {
+                for (int i = 0; i < 6; i++) {
+                    reps.add(Integer.parseInt(c.getString(c.getColumnIndex("REP" + String.valueOf(i)))));
+                }
+                Exercise exercise = new Exercise(c.getString(c.getColumnIndex("NAME")),
+                        reps,
+                        Integer.parseInt(c.getString(c.getColumnIndex("SETS"))),
+                        TargetMuscle.valueOf(c.getString(c.getColumnIndex("PRIMARY_TARGET_MUSCLE"))),
+                        TargetMuscle.valueOf(c.getString(c.getColumnIndex("SECONDARY_TARGET_MUSCLE"))),
+                        Integer.parseInt(c.getString(c.getColumnIndex("WORKOUT_ID")))
+                );
+                exercises.add(exercise);
+                reps.clear();   // Clear reps for next exercise
+            } while (c.moveToNext());
+        }
+        c.close();
         return exercises;
     }
 
     private ContentValues getValues(Exercise e){
         ContentValues values = new ContentValues();
         values.put("NAME", e.getName());
-        List<TargetMuscle> m = e.getTargetMuscles();
-        values.put("PRIMARY_TARGET_MUSCLE", m.get(0).toString());
-        values.put("SECONDARY_TARGET_MUSCLE", m.get(1).toString());
+        values.put("PRIMARY_TARGET_MUSCLE", e.getPrimaryTargetMuscle().toString());
+        values.put("SECONDARY_TARGET_MUSCLE", e.getSecondaryTargetMuscle().toString());
         values.put("SETS", e.getSets());
         List<Integer> r = e.getReps();
         for(int i = 0; i < r.size(); i++){
-            values.put("REP" + i, r.get(i));
+            values.put("REP" + String.valueOf(i), r.get(i));
         }
         values.put("WORKOUT_ID", e.getWorkoutID());
         return values;

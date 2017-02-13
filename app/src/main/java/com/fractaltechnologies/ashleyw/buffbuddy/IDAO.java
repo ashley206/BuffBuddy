@@ -12,6 +12,6 @@ public interface IDAO<T> {
     public void Create(T obj, Context c);
     public void Update(T obj, Context c);
     public void Delete(T obj, Context c);
-    public List<T> FindByName(String name);
-    public List<T> FetchAll();
+    public List<T> FindByName(String name, Context c);
+    public List<T> FetchAll(Context context);
 }

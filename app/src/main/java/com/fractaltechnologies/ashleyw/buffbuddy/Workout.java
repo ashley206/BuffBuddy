@@ -11,15 +11,18 @@ import java.util.Vector;
 
 public class Workout {
     private String m_name;
+    private int m_id;
     private ArrayList<Exercise> m_exercises;
 
-    public Workout(String name){
+    public Workout(String name, int id){
         m_name = name;
+        m_id = id;
         m_exercises = new ArrayList<Exercise>();
     }
 
-    public Workout(String name, ArrayList<Exercise> exercises){
+    public Workout(String name, int id, ArrayList<Exercise> exercises){
         m_name = name;
+        m_id = id;
         m_exercises = exercises;
     }
 
@@ -29,6 +32,14 @@ public class Workout {
 
     public void SetName(String name){
         m_name = name;
+    }
+
+    public int GetId(){
+        return m_id;
+    }
+
+    public void SetId(int id){
+        m_id = id;
     }
 
     public ArrayList<Exercise> GetExercises(){

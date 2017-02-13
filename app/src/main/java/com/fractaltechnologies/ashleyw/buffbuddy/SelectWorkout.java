@@ -13,7 +13,8 @@ import java.util.List;
 public class SelectWorkout extends AppCompatActivity {
 
     User user;
-    DBAdapter dbAdapter;
+    WorkoutDAO workoutDAO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,22 +23,18 @@ public class SelectWorkout extends AppCompatActivity {
         // Retrieve the user
         Intent i = getIntent();
         user = (User)i.getSerializableExtra("User");
-        try {
-            ArrayList<Workout> workouts = new ArrayList<Workout>();
 
-            dbAdapter = new DBAdapter(this);
-            workouts = (ArrayList<Workout>) dbAdapter.openRead().FetchAll();
+        // Retrieve list of workouts
+        ArrayList<Workout> workouts = new ArrayList<Workout>();
+        workoutDAO = new WorkoutDAO();
+        workouts = workoutDAO.FetchAll(this);
 
-            // Create unique adapter to convert array to views
-            WorkoutAdapter adapter = new WorkoutAdapter(this, workouts);
+        // Create unique adapter to convert array to views
+        WorkoutAdapter adapter = new WorkoutAdapter(this, workouts);
 
-            // Attach adapter to ListView
-            ListView listView = (ListView) findViewById(R.id.lvWorkouts);
-            listView.setAdapter(adapter);
-        }
-        catch(Exception ex){
-            Log.e("TAG", "EXCEPTION: " + ex);
-        }
+        // Attach adapter to ListView
+        ListView listView = (ListView) findViewById(R.id.lvWorkouts);
+        listView.setAdapter(adapter);
     }
 
     public void CreateWorkout(View v){

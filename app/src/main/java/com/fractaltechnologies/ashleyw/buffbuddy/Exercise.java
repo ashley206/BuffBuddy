@@ -1,5 +1,6 @@
 package com.fractaltechnologies.ashleyw.buffbuddy;
 
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -11,9 +12,11 @@ import java.util.Vector;
 public class Exercise {
     private int m_id;
     private String m_name;
-    private List<Integer> m_reps;
+    private ArrayList<Integer> m_reps;
     private int m_sets;
-    private List<TargetMuscle> m_targetMuscles;
+    private ArrayList<TargetMuscle> m_targetMuscles;
+    private TargetMuscle m_primaryTargetMuscle;
+    private TargetMuscle m_secondaryTargetMuscle;
     private int m_workoutID;
 
     public Exercise(String name){
@@ -21,15 +24,18 @@ public class Exercise {
         m_name = name;
         m_reps = new ArrayList<Integer>();
         m_sets = 0;
-        m_targetMuscles = new Vector<TargetMuscle>();
+        //m_targetMuscles = new ArrayList<TargetMuscle>();
+        m_primaryTargetMuscle = null;
+        m_secondaryTargetMuscle = null;
         m_workoutID = 0;    // TODO: Not a good assumption to make..
     }
 
-    public Exercise(String name, List<Integer> reps, int sets, List<TargetMuscle> targetMuscles, int workoutID){
+    public Exercise(String name, ArrayList<Integer> reps, int sets, TargetMuscle primary, TargetMuscle secondary, int workoutID){
         m_name = name;
         m_reps = reps;
         m_sets = sets;
-        m_targetMuscles = targetMuscles;
+        m_primaryTargetMuscle = primary;
+        m_secondaryTargetMuscle = secondary;
         m_workoutID = workoutID;
     }
 
@@ -41,13 +47,10 @@ public class Exercise {
         return m_sets;
     }
 
-    public List<Integer> getReps(){
+    public ArrayList<Integer> getReps(){
         return m_reps;
     }
 
-    public List<TargetMuscle> getTargetMuscles(){
-        return m_targetMuscles;
-    }
 
     public int getWorkoutID(){return m_workoutID;}
 
@@ -58,6 +61,35 @@ public class Exercise {
     public void setID(int id){
         m_id = id;
     }
+
+    public void setName(String name){
+        m_name = name;
+    }
+
+    public void setSets(int sets){
+        m_sets = sets;
+    }
+
+    public void setReps(ArrayList<Integer> reps){
+        m_reps = reps;
+    }
+
+    public TargetMuscle getPrimaryTargetMuscle(){
+        return m_primaryTargetMuscle;
+    }
+
+    public TargetMuscle getSecondaryTargetMuscle(){
+        return  m_secondaryTargetMuscle;
+    }
+
+    public void setPrimaryTargetMuscle(TargetMuscle primaryTargetMuscle){
+        m_primaryTargetMuscle = primaryTargetMuscle;
+    }
+
+    public void setSecondaryTargetMuscle(TargetMuscle secondaryTargetMuscle){
+        m_secondaryTargetMuscle = secondaryTargetMuscle;
+    }
+
     public Exercise SelectExercise() {
         return this;
     }
