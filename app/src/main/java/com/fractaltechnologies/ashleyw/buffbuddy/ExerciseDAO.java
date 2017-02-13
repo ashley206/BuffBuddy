@@ -65,49 +65,50 @@ public class ExerciseDAO implements IDAO<Exercise> {
     }
 
     @Override
-    public List<Exercise> FindByName(String name, Context context){
+    public Exercise FindByName(String name, Context context){
         DBAdapter dbAdapter = new DBAdapter(context);
         String sql = "SELECT * FROM EXERCISE WHERE NAME = ?";
         Cursor c = dbAdapter.openRead().getDBInstance().rawQuery(sql, new String [] { name });
-        ArrayList<Exercise> exercises = new ArrayList<Exercise>();
+        Exercise exercise = null;
         if(c.moveToFirst()) {
             ArrayList<Integer> reps = new ArrayList<Integer>();
-            do {
-                for (int i = 0; i < 6; i++) {
-                    reps.add(Integer.parseInt(c.getString(c.getColumnIndex("REP" + String.valueOf(i)))));
-                }
-                Exercise exercise = new Exercise(c.getString(c.getColumnIndex("NAME")),
-                        reps,
-                        Integer.parseInt(c.getString(c.getColumnIndex("SETS"))),
-                        TargetMuscle.valueOf(c.getString(c.getColumnIndex("PRIMARY_TARGET_MUSCLE"))),
-                        TargetMuscle.valueOf(c.getString(c.getColumnIndex("SECONDARY_TARGET_MUSCLE"))),
-                        Integer.parseInt(c.getString(c.getColumnIndex("WORKOUT_ID")))
-                );
-                exercises.add(exercise);
-                reps.clear();
-            } while (c.moveToNext());
+            for (int i = 0; i < 6; i++) {
+                reps.add(Integer.parseInt(c.getString(c.getColumnIndex("REP" + String.valueOf(i)))));
+            }
+            exercise = new Exercise(c.getString(c.getColumnIndex("NAME")),
+                    reps,
+                    Integer.parseInt(c.getString(c.getColumnIndex("SETS"))),
+                    TargetMuscle.fromString(c.getString(c.getColumnIndex("PRIMARY_TARGET_MUSCLE"))),
+                    TargetMuscle.fromString(c.getString(c.getColumnIndex("SECONDARY_TARGET_MUSCLE"))),
+                    Integer.parseInt(c.getString(c.getColumnIndex("WORKOUT_ID")))
+            );
+
+            reps.clear();
         }
         c.close();
-        return exercises;
+        return exercise;
     }
 
     @Override
     public ArrayList<Exercise> FetchAll(Context context){
-        String sql = "SELECT * FROM WORKOUT";
+        String sql = "SELECT * FROM EXERCISE";
         DBAdapter dbAdapter = new DBAdapter(context);
         Cursor c = dbAdapter.openRead().getDBInstance().rawQuery(sql, null);
         ArrayList<Exercise> exercises = new ArrayList<Exercise>();
         if(c.moveToFirst()) {
             ArrayList<Integer> reps = new ArrayList<Integer>();
             do {
-                for (int i = 0; i < 6; i++) {
-                    reps.add(Integer.parseInt(c.getString(c.getColumnIndex("REP" + String.valueOf(i)))));
+                for (int i = 1; i <= 6; i++) {
+                    String val = c.getString(c.getColumnIndex("REP" + i));
+                    if(val != null){
+                        reps.add(Integer.parseInt(val));
+                    }
                 }
                 Exercise exercise = new Exercise(c.getString(c.getColumnIndex("NAME")),
                         reps,
                         Integer.parseInt(c.getString(c.getColumnIndex("SETS"))),
-                        TargetMuscle.valueOf(c.getString(c.getColumnIndex("PRIMARY_TARGET_MUSCLE"))),
-                        TargetMuscle.valueOf(c.getString(c.getColumnIndex("SECONDARY_TARGET_MUSCLE"))),
+                        TargetMuscle.fromString(c.getString(c.getColumnIndex("PRIMARY_TARGET_MUSCLE"))),
+                        TargetMuscle.fromString(c.getString(c.getColumnIndex("SECONDARY_TARGET_MUSCLE"))),
                         Integer.parseInt(c.getString(c.getColumnIndex("WORKOUT_ID")))
                 );
                 exercises.add(exercise);

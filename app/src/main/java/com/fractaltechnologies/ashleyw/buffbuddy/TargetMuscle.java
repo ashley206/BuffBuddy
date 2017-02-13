@@ -31,7 +31,17 @@ public enum TargetMuscle {
         return m_muscle.equals(muscle);
     }
 
+    @Override
     public String toString(){
         return this.m_muscle;
+    }
+
+    public static TargetMuscle fromString(String muscle) {
+        for (TargetMuscle name : values()) {
+            if (name.m_muscle.equals(muscle)) {
+                return name;
+            }
+        }
+        return null;
     }
 }

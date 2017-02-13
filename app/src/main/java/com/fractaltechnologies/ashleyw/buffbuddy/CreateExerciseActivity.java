@@ -23,7 +23,7 @@ public class CreateExerciseActivity extends AppCompatActivity {
 
         // TODO: A Workout obj is going to be passed into here in order to retrieve the Workout
         // that is associated with this new exercise
-        Intent i = new Intent();
+        Intent i = getIntent();
         workout = (Workout)i.getSerializableExtra("Workout");
 
         Spinner spinnerPrimary = (Spinner)findViewById(R.id.spTargetMuscleP);
@@ -75,5 +75,7 @@ public class CreateExerciseActivity extends AppCompatActivity {
         Exercise exercise = new Exercise(name, reps, sets, PMG, SMG, workout.GetId());
         ExerciseDAO exerciseDAO = new ExerciseDAO();
         exerciseDAO.Create(exercise, this);
+
+        // TODO: Take back to the EditExercise screen
     }
 }

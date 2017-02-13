@@ -19,22 +19,19 @@ public class EditExericsesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_exericses);
 
-        Intent i = new Intent();
+        Intent i = getIntent();
         workout = (Workout)i.getSerializableExtra("Workout");
 
         // Exercises that exists for this workout need to be populated
         ArrayList<Exercise> exercises = new ArrayList<Exercise>();
-
-        dbAdapter = new DBAdapter(this);
         exerciseDAO = new ExerciseDAO();
-
         exercises = exerciseDAO.FetchAll(this);
 
         // Create unique adapter to convert array to views
         ExerciseAdapter adapter = new ExerciseAdapter(this, exercises);
 
         // Attach adapter to ListView
-        ListView listView = (ListView) findViewById(R.id.lvWorkouts);
+        ListView listView = (ListView) findViewById(R.id.lvExercises);
         listView.setAdapter(adapter);
     }
 

@@ -37,21 +37,19 @@ public class WorkoutDAO implements IDAO<Workout> {
         dbAdapter.openWrite().Delete("WORKOUT", "ID = ?", whereArgs);
     }
     @Override
-    public ArrayList<Workout> FindByName(String name, Context context){
+    public Workout FindByName(String name, Context context){
         DBAdapter dbAdapter = new DBAdapter(context);
         String sql = "SELECT * FROM WORKOUT WHERE NAME = ?";
-        Cursor c = dbAdapter.getDBInstance().rawQuery(sql, new String [] {name});
-        ArrayList<Workout> workouts = new ArrayList<Workout>();
+        Cursor c = dbAdapter.openRead().getDBInstance().rawQuery(sql, new String [] {name});
+        Workout workout = null;
         if(c.moveToFirst()) {
-            do {
-                workouts.add(new Workout(c.getString(c.getColumnIndex("NAME")),
-                        Integer.parseInt(c.getString(c.getColumnIndex("ID"))))
-                );
-            } while (c.moveToNext());
+                workout = new Workout(c.getString(c.getColumnIndex("NAME")),
+                        Integer.parseInt(c.getString(c.getColumnIndex("ID"))));
         }
         c.close();
-        return workouts;
+        return workout;
     }
+
     @Override
     public ArrayList<Workout> FetchAll(Context context){
         DBAdapter dbAdapter = new DBAdapter(context);
