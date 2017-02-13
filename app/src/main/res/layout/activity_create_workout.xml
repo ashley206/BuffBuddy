@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.fractaltechnologies.ashleyw.buffbuddy.CreateWorkout">
+    tools:context="com.fractaltechnologies.ashleyw.buffbuddy.CreateWorkoutActivity">
 
     <EditText
         android:id="@+id/etName"
@@ -17,35 +17,11 @@
         android:layout_height="wrap_content"
         android:hint="Name"
         />
-
-    <TextView
+    <Button
+        android:id="@+id/bttnCreateWorkout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Exercises in this workout:"/>
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/lvExercises"
-        android:layout_weight="1"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Edit Exercises"
-            android:onClick="EditExercises"/>
-        <Button
-            android:id="@+id/bttnCreateWorkout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Save Workout"
-            android:onClick="SaveWorkout"/>
-    </LinearLayout>
+        android:text="Save Workout"
+        android:onClick="SaveWorkout"/>
 
 </LinearLayout>

@@ -3,12 +3,10 @@ package com.fractaltechnologies.ashleyw.buffbuddy;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SelectWorkout extends AppCompatActivity {
 
@@ -37,11 +35,11 @@ public class SelectWorkout extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
+    // COMPLETE
     public void CreateWorkout(View v){
-        Intent i = new Intent(SelectWorkout.this, CreateWorkout.class);
+        Intent i = new Intent(SelectWorkout.this, CreateWorkoutActivity.class);
         i.putExtra("User", user);
         startActivity(i);
-
     }
 
 

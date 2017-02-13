@@ -1,5 +1,6 @@
 package com.fractaltechnologies.ashleyw.buffbuddy;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,7 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.lang.annotation.Target;
+import java.util.ArrayList;
+
 public class CreateExerciseActivity extends AppCompatActivity {
+
+
+    Workout workout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +23,8 @@ public class CreateExerciseActivity extends AppCompatActivity {
 
         // TODO: A Workout obj is going to be passed into here in order to retrieve the Workout
         // that is associated with this new exercise
+        Intent i = new Intent();
+        workout = (Workout)i.getSerializableExtra("Workout");
 
         Spinner spinnerPrimary = (Spinner)findViewById(R.id.spTargetMuscleP);
         Spinner spinnerSecondary = (Spinner)findViewById(R.id.spTargetMuscleS);
@@ -46,8 +55,8 @@ public class CreateExerciseActivity extends AppCompatActivity {
 
         String name = etName.getText().toString();
         int sets = Integer.parseInt(etSets.getText().toString());
-        String PMG = spPMG.getSelectedItem().toString();
-        String SMG = spSMG.getSelectedItem().toString();
+        TargetMuscle PMG = TargetMuscle.valueOf(spPMG.getSelectedItem().toString());
+        TargetMuscle SMG = TargetMuscle.valueOf(spSMG.getSelectedItem().toString());
         int rep1 = Integer.parseInt(etRep1.getText().toString());
         int rep2 = Integer.parseInt(etRep2.getText().toString());
         int rep3 = Integer.parseInt(etRep3.getText().toString());
@@ -55,6 +64,16 @@ public class CreateExerciseActivity extends AppCompatActivity {
         int rep5 = Integer.parseInt(etRep5.getText().toString());
         int rep6 = Integer.parseInt(etRep6.getText().toString());
 
+        ArrayList<Integer> reps = new ArrayList<Integer>();
+        reps.add(rep1);
+        reps.add(rep2);
+        reps.add(rep3);
+        reps.add(rep4);
+        reps.add(rep5);
+        reps.add(rep6);
 
+        Exercise exercise = new Exercise(name, reps, sets, PMG, SMG, workout.GetId());
+        ExerciseDAO exerciseDAO = new ExerciseDAO();
+        exerciseDAO.Create(exercise, this);
     }
 }

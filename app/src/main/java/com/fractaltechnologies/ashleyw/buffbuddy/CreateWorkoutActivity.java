@@ -4,8 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 
-public class CreateWorkout extends AppCompatActivity {
+public class CreateWorkoutActivity extends AppCompatActivity {
 
     User user;
 
@@ -16,15 +17,18 @@ public class CreateWorkout extends AppCompatActivity {
 
         Intent i = getIntent();
         user = (User)i.getSerializableExtra("User");
-    }
 
-    public void EditExercises(View v){
 
     }
+
+
 
     public void SaveWorkout(View v){
-        // This will update the workout in the database, given the workout ID
+        // This will create the workout in the database
+        EditText etName = (EditText)findViewById(R.id.etName);
+        String name = etName.getText().toString();
+        Workout workout = new Workout(name);
         WorkoutDAO workoutDAO = new WorkoutDAO();
-        //workoutDAO.Create(workout, this);
+        workoutDAO.Create(workout, this);
     }
 }

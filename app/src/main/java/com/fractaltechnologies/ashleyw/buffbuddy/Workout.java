@@ -1,5 +1,6 @@
 package com.fractaltechnologies.ashleyw.buffbuddy;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -9,10 +10,16 @@ import java.util.Vector;
  * Created by Ashley H on 1/19/2017.
  */
 
-public class Workout {
+public class Workout implements Serializable {
     private String m_name;
     private int m_id;
     private ArrayList<Exercise> m_exercises;
+
+    public Workout(String name){
+        m_name = name;
+        m_id = -1;
+        m_exercises = new ArrayList<Exercise>();
+    }
 
     public Workout(String name, int id){
         m_name = name;

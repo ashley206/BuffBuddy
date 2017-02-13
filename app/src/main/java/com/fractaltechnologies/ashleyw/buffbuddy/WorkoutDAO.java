@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class WorkoutDAO implements IDAO<Workout> {
     @Override
     public void Create(Workout workout, Context context) {
+        // TODO: This should check if a workout name already exists
         DBAdapter dbAdapter = new DBAdapter(context);
         ContentValues values = new ContentValues();
         values.put("NAME", workout.GetName());

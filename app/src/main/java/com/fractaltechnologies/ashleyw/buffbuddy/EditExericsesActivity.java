@@ -3,6 +3,7 @@ package com.fractaltechnologies.ashleyw.buffbuddy;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -35,5 +36,11 @@ public class EditExericsesActivity extends AppCompatActivity {
         // Attach adapter to ListView
         ListView listView = (ListView) findViewById(R.id.lvWorkouts);
         listView.setAdapter(adapter);
+    }
+
+    public void CreateExercise(View v){
+        Intent i = new Intent(EditExericsesActivity.this, CreateExerciseActivity.class);
+        i.putExtra("Workout", workout);
+        startActivity(i);
     }
 }
