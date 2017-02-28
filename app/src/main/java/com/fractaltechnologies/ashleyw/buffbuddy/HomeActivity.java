@@ -1,7 +1,6 @@
 package com.fractaltechnologies.ashleyw.buffbuddy;
 
 import android.content.Intent;
-import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -32,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void BeginWorkout(View v){
         // Pass the user along to the Select Workout page
-        Intent i = new Intent(HomeActivity.this, SelectWorkout.class);
+        Intent i = new Intent(HomeActivity.this, SelectWorkoutActivity.class);
         i.putExtra("User", user);
         startActivity(i);
     }

@@ -21,17 +21,27 @@ public class Exercise implements Serializable {
     private int m_workoutID;
 
     public Exercise(String name){
-        m_id = 0;       // TODO: Another bad assumption
+        m_id = -1;
         m_name = name;
         m_reps = new ArrayList<Integer>();
-        m_sets = 0;
-        //m_targetMuscles = new ArrayList<TargetMuscle>();
+        m_sets = -1;
         m_primaryTargetMuscle = null;
         m_secondaryTargetMuscle = null;
-        m_workoutID = 0;    // TODO: Not a good assumption to make..
+        m_workoutID = -1;
     }
 
     public Exercise(String name, ArrayList<Integer> reps, int sets, TargetMuscle primary, TargetMuscle secondary, int workoutID){
+        m_id = -1;
+        m_name = name;
+        m_reps = reps;
+        m_sets = sets;
+        m_primaryTargetMuscle = primary;
+        m_secondaryTargetMuscle = secondary;
+        m_workoutID = workoutID;
+    }
+
+    public Exercise(int id, String name, ArrayList<Integer> reps, int sets, TargetMuscle primary, TargetMuscle secondary, int workoutID){
+        m_id = id;
         m_name = name;
         m_reps = reps;
         m_sets = sets;
@@ -52,15 +62,20 @@ public class Exercise implements Serializable {
         return m_reps;
     }
 
-
-    public int getWorkoutID(){return m_workoutID;}
-
     public int getID(){
         return m_id;
     }
 
     public void setID(int id){
         m_id = id;
+    }
+
+    public int getWorkoutID(){
+        return m_workoutID;
+    }
+
+    public void setWorkoutID(int workoutID){
+        m_workoutID = workoutID;
     }
 
     public void setName(String name){

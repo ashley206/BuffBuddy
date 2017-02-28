@@ -1,7 +1,5 @@
 package com.fractaltechnologies.ashleyw.buffbuddy;
 
-import android.database.DatabaseErrorHandler;
-import android.database.sqlite.SQLiteDatabase;
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,6 +13,7 @@ public class User implements Serializable {
     private String m_username;
     private String m_email;
     private String m_password;
+    private int m_id;
     private boolean m_google;
     private List<Workout> m_workouts;
 
@@ -22,6 +21,7 @@ public class User implements Serializable {
         m_firstname = "";
         m_lastname = "";
         m_username = "";
+        m_id = -1;
         m_email = "";
         m_password = "";
         m_google = false;
@@ -35,12 +35,22 @@ public class User implements Serializable {
         m_google = google;
     }
 
+    public User(String firstname, String lastname, String email, String username, String password, int userId, boolean google){
+        m_firstname = firstname;
+        m_lastname = lastname;
+        m_username = username;
+        m_email = email;
+        m_password = password;
+        m_id = userId;
+        m_google = google;
+    }
+
     public void PerformWorkout(Workout wo){
         // TODO: Come back and complete
     }
 
 
-    public User Login(String username, String password, DBAdapter db){
+    public static User Login(String username, String password, DBAdapter db){
         // Attempt to fetch the account based on the user object
         return db.Login(username, password);
     }
@@ -65,6 +75,14 @@ public class User implements Serializable {
     }
     public void setGoogleAccount(boolean googleAcct){
         m_google = googleAcct;
+    }
+
+    public void setID(int id){
+        m_id = id;
+    }
+
+    public int getID(){
+        return m_id;
     }
 
 }

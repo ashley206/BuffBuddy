@@ -21,6 +21,7 @@
         completions."
     </string>
     <string-array name="targetMuscles">
+        <item>--No Selection--</item>
         <item>Quadriceps</item>
         <item>Pectorals</item>
         <item>Medial Deltoids</item>

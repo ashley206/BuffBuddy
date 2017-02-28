@@ -13,23 +13,27 @@ import java.util.Vector;
 public class Workout implements Serializable {
     private String m_name;
     private int m_id;
+    private int m_userId;
     private ArrayList<Exercise> m_exercises;
 
-    public Workout(String name){
+    public Workout(String name, int userId){
         m_name = name;
         m_id = -1;
+        m_userId = userId;
         m_exercises = new ArrayList<Exercise>();
     }
 
-    public Workout(String name, int id){
+    public Workout(String name, int id, int userId){
         m_name = name;
         m_id = id;
+        m_userId = userId;
         m_exercises = new ArrayList<Exercise>();
     }
 
-    public Workout(String name, int id, ArrayList<Exercise> exercises){
+    public Workout(String name, int id, int userId, ArrayList<Exercise> exercises){
         m_name = name;
         m_id = id;
+        m_userId = userId;
         m_exercises = exercises;
     }
 

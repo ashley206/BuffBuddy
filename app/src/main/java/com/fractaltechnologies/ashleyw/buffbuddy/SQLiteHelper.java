@@ -1,15 +1,16 @@
 package com.fractaltechnologies.ashleyw.buffbuddy;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import java.util.Vector;
 
@@ -19,44 +20,53 @@ import java.util.Vector;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
 
+    private static String DATABASE_PATH = "/data/user/0/com.fractaltechnologies.ashleyw.buffbuddy/databases/";
+    private static final String DATABASE_NAME = "buffbuddy.sqlite";
+    private static final int DATABASE_VERSION = 3;
     private Context m_context;
-    public SQLiteHelper(Context context, String dbName, SQLiteDatabase.CursorFactory factory, int version){
-        super(context, dbName, factory, version);
+
+    public SQLiteHelper(Context context ){
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         m_context = context;
+    }
+
+    public void createDatabase() throws IOException {
+        boolean dbExists = databaseExists();
+        // We only care if the database doesn't exist
+        if(!dbExists){
+            this.getReadableDatabase();
+            try{
+                // This imports the default database into the system
+                importDatabase();
+            }catch (IOException e){
+                Log.e("TAG", "EXCEPTION: " + e.getMessage());
+            }
+        }
     }
 
     // Overridden method to create the sql database tables necessary
     // for this application.
     @Override
     public void onCreate(SQLiteDatabase db){
-        String sql = "CREATE TABLE IF NOT EXISTS USER(\n" +
-                "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-                "    FIRSTNAME TEXT,\n" +
-                "    LASTNAME TEXT,\n" +
-                "    EMAIL TEXT,\n" +
-                "    PASSWORD TEXT,\n" +
-                "    GOOGLEACCOUNT INTEGER\n" +
-                "    )";
-        db.execSQL(sql);
-        //executeSQLScript(db, "create.sql");
+
     }
 
     // Overridden method to handle upgrades to the database, if any.
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-        if(newVersion > oldVersion){
-            // New cases can be added as the database changes.
-            switch (oldVersion){
-                // Cases will not 'break' so they can be subsequently upgraded
-                case 1:
-                    // 1/27/17: create_v2.sql modified the Exercise table to include 6
-                    // optional columns for specific rep amounts.
-                    executeSQLScript(db, "create_v2.sql");
-                case 2:
-                    executeSQLScript(db, "create_v3.sql");
-            }
-            onCreate(db);
-        }
+//        if(newVersion > oldVersion){
+//            // New cases can be added as the database changes.
+//            switch (oldVersion){
+//                // Cases will not 'break' so they can be subsequently upgraded
+//                case 1:
+//                    // 1/27/17: create_v2.sql modified the Exercise table to include 6
+//                    // optional columns for specific rep amounts.
+//                    executeSQLScript(db, "create_v2.sql");
+//                case 2:
+//                    executeSQLScript(db, "create_v3.sql");
+//            }
+//            onCreate(db);
+//        }
     }
 
     // Takes a given SQL file and runs the code SQL statements in that file.
@@ -94,9 +104,50 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             // TODO: Appropriate error handling/message
             e.printStackTrace();
         }
-
     }
-    public boolean isTableExists(String tableName, boolean openDb) {
+
+
+    //This function will import a database from the assets folder -- this WILL overwrite the
+    //existing database if one exists already. Calling functions should check for an existing db.
+    private void importDatabase() throws IOException{
+        // Open local db
+        AssetManager mgr = m_context.getAssets();
+        // databases is the subfolder in the assets folder -- may change later but is functional now
+        InputStream inputStream = mgr.open("databases" + File.separator + DATABASE_NAME);
+        // Path in the phone itself for the just-create db
+        String outFileName = DATABASE_PATH + DATABASE_NAME;
+        // Open empty db as output stream
+        OutputStream outputStream = new FileOutputStream(outFileName);
+
+        // Reansfer bytes from input to output file
+        byte [] buffer = new byte[1024];
+        int len = 0;
+        while((len = inputStream.read(buffer)) > 0){
+            outputStream.write(buffer, 0, len);
+        }
+
+        outputStream.flush();
+        outputStream.close();
+        inputStream.close();
+    }
+
+    public boolean databaseExists(){
+        SQLiteDatabase db = null;
+        try{
+            String path = DATABASE_PATH + DATABASE_NAME;
+            db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
+        }catch(SQLiteException e){
+            Log.e("TAG", "EXCEPTION: " + e.getMessage());
+        }
+        // If db exists, it needs to be closed again
+        if(db != null){
+            db.close();
+        }
+        // Return boolean corresponding to existence of db
+        return db == null? false : true;
+    }
+
+    public boolean tableExists(String tableName, boolean openDb) {
         SQLiteDatabase db = this.getReadableDatabase();
         if(openDb) {
             if(db == null || !db.isOpen()) {

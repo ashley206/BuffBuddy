@@ -28,12 +28,7 @@
         android:layout_height="0dp"
         android:id="@+id/lvExercises"
         android:layout_weight="1"/>
-    <!---->
-    <!--<TextView android:id="@android:id/empty"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="No Results"-->
-        <!--android:layout_weight="0"/>-->
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,8 +38,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Edit Exercises"
-            android:onClick="EditExercises"/>
+            android:text="Add Exercises"
+            android:onClick="AddExercises"/>
         <Button
             android:id="@+id/bttnCreateWorkout"
             android:layout_width="0dp"

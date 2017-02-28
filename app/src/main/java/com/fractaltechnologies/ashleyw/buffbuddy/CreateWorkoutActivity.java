@@ -26,18 +26,18 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         EditText etName = (EditText)findViewById(R.id.etName);
         String name = etName.getText().toString();
         if(!name.isEmpty()) {
-            Workout workout = new Workout(name);
+            Workout workout = new Workout(name, user.getID());
             WorkoutDAO workoutDAO = new WorkoutDAO();
             // TODO: What if this fails? (duplicates, other reasons)
             workoutDAO.Create(workout, this);
             workout = workoutDAO.FindByName(workout.GetName(), this);   // This will also retrieve the ID
-try {
-    Intent i = new Intent(CreateWorkoutActivity.this, EditWorkoutActivity.class);
-    i.putExtra("Workout", workout);
-    startActivity(i);
-}catch (Exception ex){
-    String exc = ex.getMessage();
-}
+            try {
+                Intent i = new Intent(CreateWorkoutActivity.this, EditWorkoutActivity.class);
+                i.putExtra("Workout", workout);
+                startActivity(i);
+            }catch (Exception ex){
+                String exc = ex.getMessage();
+            }
         }
         else{
             Toast.makeText(CreateWorkoutActivity.this, "Workout name is required.", Toast.LENGTH_LONG).show();

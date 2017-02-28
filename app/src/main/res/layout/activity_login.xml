@@ -53,10 +53,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/bttnLogin"
-                android:onClick="Login"
                 android:text="Log In"
                 android:textStyle="bold"
                 />
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/bttnGoogleSignIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/bttnGoogleSignOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign Out (Google)"/>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

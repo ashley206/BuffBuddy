@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import java.lang.reflect.Array;
@@ -17,24 +18,20 @@ import java.util.Vector;
 
 public class DBAdapter {
     // SQLiteHelper Version should be same for all users
-    final static int DB_VERSION = 3;
-    private static String DB_NAME = "buffbuddy.sqlite";
+    //final static int DB_VERSION = 3;
+
     private static String DB_PATH = null;
     public SQLiteDatabase db;
     private SQLiteHelper dbHelper;
 
     private final Context m_context;
 
-    public String getDBName(){
-        return DB_NAME;
-    }
-
     // Public constructor to initialize the object.
     public DBAdapter(Context context){
         // Store context for later use
         m_context = context;
-        dbHelper = new SQLiteHelper(context, DB_NAME, null, DB_VERSION);
-        DB_PATH = m_context.getDatabasePath(DB_NAME).getAbsolutePath();
+        dbHelper = new SQLiteHelper(context);
+        //DB_PATH = m_context.getDatabasePath(DB_NAME).getAbsolutePath();
     }
 
     public DBAdapter openWrite(){
@@ -72,20 +69,26 @@ public class DBAdapter {
     }
 
     public User Login(String username, String password){
-        // TODO: Using sqlcipher, encipher again here so the raw text pwd isn't sent
         User user = null;
-        SQLiteDatabase db = new SQLiteHelper(m_context, DB_NAME, null, DB_VERSION).getReadableDatabase();
+        SQLiteDatabase db = new SQLiteHelper(m_context).getReadableDatabase();
         String sql = "SELECT USERNAME, EMAIL," +
-                "FIRSTNAME, LASTNAME, GOOGLEACCOUNT " +
+                "FIRSTNAME, LASTNAME, ID, GOOGLEACCOUNT " +
                 "FROM USER WHERE USERNAME = '" + username + "'";
-        Cursor c = db.rawQuery(sql, null);
-        if(c.moveToFirst()){
-            user = new User();
-            user.setFirstName(c.getString(c.getColumnIndex("FIRSTNAME")));
-            user.setLastName(c.getString(c.getColumnIndex("LASTNAME")));
-            boolean google = Boolean.parseBoolean(c.getString(c.getColumnIndex("GOOGLEACCOUNT")));
-            user.setGoogleAccount(google);
-            user.setUsername(c.getString(c.getColumnIndex("USERNAME")));
+        try {
+            Cursor c = db.rawQuery(sql, null);
+            if (c.moveToFirst()) {
+                if(password == c.getString(c.getColumnIndex("PASSWORD"))) {
+                    user = new User();
+                    user.setFirstName(c.getString(c.getColumnIndex("FIRSTNAME")));
+                    user.setLastName(c.getString(c.getColumnIndex("LASTNAME")));
+                    boolean google = Boolean.parseBoolean(c.getString(c.getColumnIndex("GOOGLEACCOUNT")));
+                    user.setID(c.getInt(c.getColumnIndex("ID")));
+                    user.setGoogleAccount(google);
+                    user.setUsername(c.getString(c.getColumnIndex("USERNAME")));
+                }
+            }
+        }catch (SQLiteException ex){
+            Log.e("TAG", "EXCEPTION: " + ex.getMessage());
         }
         return user;
     }
@@ -94,7 +97,7 @@ public class DBAdapter {
         boolean success = false;
         try {
             // We must ensure that this is a unique entry in the database
-            SQLiteDatabase db = new SQLiteHelper(m_context, DB_NAME, null, DB_VERSION).getWritableDatabase();
+            SQLiteDatabase db = new SQLiteHelper(m_context).getWritableDatabase();
             String sql = String.format("SELECT EMAIL FROM USER WHERE EMAIL = '%s'", username);
             Cursor c = db.rawQuery(sql, null);
             // Ensure no values exist
