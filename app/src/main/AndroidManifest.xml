@@ -22,14 +22,18 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".CreateExerciseActivity" />
+        <activity
+            android:name=".CreateExerciseActivity"
+            android:parentActivityName=".SelectExericsesActivity"/>
         <activity android:name=".HomeActivity" />
         <activity
             android:name=".SelectWorkoutActivity"
             android:parentActivityName=".HomeActivity"></activity>
         <activity android:name=".CreateWorkoutActivity" />
         <activity android:name=".SelectExericsesActivity" />
-        <activity android:name=".EditWorkoutActivity" />
+        <activity
+            android:name=".EditWorkoutActivity"
+            android:parentActivityName=".SelectWorkoutActivity"/>
         <activity android:name=".EditExerciseActivity" />
         <activity android:name=".ProgressReportActivity"></activity>
     </application>

@@ -71,13 +71,13 @@ public class DBAdapter {
     public User Login(String username, String password){
         User user = null;
         SQLiteDatabase db = new SQLiteHelper(m_context).getReadableDatabase();
-        String sql = "SELECT USERNAME, EMAIL," +
+        String sql = "SELECT USERNAME, PASSWORD, EMAIL," +
                 "FIRSTNAME, LASTNAME, ID, GOOGLEACCOUNT " +
                 "FROM USER WHERE USERNAME = '" + username + "'";
         try {
             Cursor c = db.rawQuery(sql, null);
             if (c.moveToFirst()) {
-                if(password == c.getString(c.getColumnIndex("PASSWORD"))) {
+                if(password.equals(c.getString(c.getColumnIndex("PASSWORD")))) {
                     user = new User();
                     user.setFirstName(c.getString(c.getColumnIndex("FIRSTNAME")));
                     user.setLastName(c.getString(c.getColumnIndex("LASTNAME")));

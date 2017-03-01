@@ -1,8 +1,11 @@
 package com.fractaltechnologies.ashleyw.buffbuddy;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -23,6 +26,9 @@ public class CreateExerciseActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         workout = (Workout)i.getSerializableExtra("Workout");
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         Spinner spinnerPrimary = (Spinner)findViewById(R.id.spTargetMuscleP);
         Spinner spinnerSecondary = (Spinner)findViewById(R.id.spTargetMuscleS);
@@ -97,5 +103,20 @@ public class CreateExerciseActivity extends AppCompatActivity {
         Intent i = new Intent(CreateExerciseActivity.this, EditWorkoutActivity.class);
         i.putExtra("Workout", workout);
         startActivity(i);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            onBackPressed();
+            Intent i = ApplicationParents.getInstance().parents.pop();
+            i.putExtra("Workout", workout);
+            startActivity(i);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

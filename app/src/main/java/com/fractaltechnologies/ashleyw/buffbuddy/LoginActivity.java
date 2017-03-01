@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,8 +43,6 @@ public class LoginActivity extends AppCompatActivity
         // Create instance of SQLite database
         db = new DBAdapter(this);
         db = db.openWrite();
-        // Retrieve reference of Login button
-        bttnLogin = (Button)findViewById(R.id.bttnLogin);
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -58,8 +57,11 @@ public class LoginActivity extends AppCompatActivity
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        findViewById(R.id.bttnGoogleSignIn).setOnClickListener(this);
-        findViewById(R.id.bttnLogin).setOnClickListener(this);
+        // Initialize buttons
+        SignInButton bttnGoogleLogin = (SignInButton)findViewById(R.id.bttnGoogleSignIn);
+        bttnGoogleLogin.setOnClickListener(this);
+        bttnLogin = (Button)findViewById(R.id.bttnLogin);
+        bttnLogin.setOnClickListener(this);
     }
 
     private void Login() {
@@ -156,10 +158,13 @@ public class LoginActivity extends AppCompatActivity
     private void updateUI(boolean signedIn) {
         if (signedIn) {
             findViewById(R.id.bttnGoogleSignIn).setVisibility(View.GONE);
+            Toast.makeText(LoginActivity.this, "Successfully logged in!", Toast.LENGTH_LONG).show();
+
             //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
         } else {
 
             findViewById(R.id.bttnGoogleSignIn).setVisibility(View.VISIBLE);
+            Toast.makeText(LoginActivity.this, "Failed to log in. Try again.", Toast.LENGTH_LONG).show();
             //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }
     }

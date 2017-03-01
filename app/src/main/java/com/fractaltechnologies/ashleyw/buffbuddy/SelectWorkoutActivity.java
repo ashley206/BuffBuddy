@@ -48,6 +48,7 @@ public class SelectWorkoutActivity extends AppCompatActivity {
                     Workout workout = (Workout) listView.getItemAtPosition(position);
                     Intent i = new Intent(SelectWorkoutActivity.this, EditWorkoutActivity.class);
                     i.putExtra("Workout", workout);
+                    i.putExtra("User", user);
                     startActivity(i);
                 }
             });
@@ -90,5 +91,19 @@ public class SelectWorkoutActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            onBackPressed();
+            Intent i = new Intent(SelectWorkoutActivity.this, HomeActivity.class);
+            i.putExtra("User", user);
+            startActivity(i);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }

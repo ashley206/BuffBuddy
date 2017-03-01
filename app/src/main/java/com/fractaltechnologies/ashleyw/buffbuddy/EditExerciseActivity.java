@@ -1,8 +1,10 @@
 package com.fractaltechnologies.ashleyw.buffbuddy;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -18,6 +20,10 @@ public class EditExerciseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_exercise);
+
+        /// Set up action bar to contain Up button
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent i = getIntent();
         exercise = (Exercise)i.getSerializableExtra("Exercise");
@@ -139,5 +145,20 @@ public class EditExerciseActivity extends AppCompatActivity {
 
     public void deleteExerciseFromWorkout(View view){
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            onBackPressed();
+            Intent i = ApplicationParents.getInstance().parents.pop();
+            i.putExtra("Workout", workout);
+            startActivity(i);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
