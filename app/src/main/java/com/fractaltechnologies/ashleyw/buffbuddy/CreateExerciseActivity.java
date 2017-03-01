@@ -15,9 +15,8 @@ import java.lang.annotation.Target;
 import java.util.ArrayList;
 
 public class CreateExerciseActivity extends AppCompatActivity {
-
-
     Workout workout;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +25,7 @@ public class CreateExerciseActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         workout = (Workout)i.getSerializableExtra("Workout");
+        user = (User)i.getSerializableExtra("User");
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -113,6 +113,7 @@ public class CreateExerciseActivity extends AppCompatActivity {
             onBackPressed();
             Intent i = ApplicationParents.getInstance().parents.pop();
             i.putExtra("Workout", workout);
+            i.putExtra("User", user);
             startActivity(i);
             return true;
         }

@@ -56,7 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
         if(valid) {
             // Determine if the user successfully logged in
-            if (user.Register(username, email, password, confirmPassword, fname, lname, db)) {
+            if (User.Register(username, email, password, confirmPassword, fname, lname, db)) {
                 Toast.makeText(RegisterActivity.this, "Successful registration!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(RegisterActivity.this, "Failed to register. Try again.", Toast.LENGTH_LONG).show();

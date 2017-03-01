@@ -49,18 +49,30 @@ public class User implements Serializable {
         // TODO: Come back and complete
     }
 
+    public static boolean UserExists(String email, DBAdapter db){
+        return db.UserExists(email);
+    }
+
+    public static User GoogleLogin(String email, DBAdapter db){
+        return db.GoogleLogin(email);
+    }
 
     public static User Login(String username, String password, DBAdapter db){
         // Attempt to fetch the account based on the user object
         return db.Login(username, password);
     }
 
-    public boolean Register(String username, String email, String password, String cPassword, String fname, String lname, DBAdapter db){
+    public static boolean Register(String username, String email, String password, String cPassword, String fname, String lname, DBAdapter db){
         boolean success = false;
-        // TODO: The password must be encrypted here before being sent to the database
         if(db.Register(username, email, password, fname, lname))
             success = true;
         return success;
+    }
+
+    // Can only be passed email because no assumptions can be made about the format of other
+    // information Google mayy have (ie. given name, display name, etc.)
+    public static boolean GoogleRegister(String email, DBAdapter db){
+        return db.GoogleRegister(email);
     }
 
     public void setFirstName(String fname){
@@ -70,9 +82,11 @@ public class User implements Serializable {
     public void setLastName(String lname){
         m_lastname = lname;
     }
+
     public void setUsername(String username){
         m_username = username;
     }
+
     public void setGoogleAccount(boolean googleAcct){
         m_google = googleAcct;
     }

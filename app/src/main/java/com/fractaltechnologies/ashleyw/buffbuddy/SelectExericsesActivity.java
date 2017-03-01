@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class SelectExericsesActivity extends AppCompatActivity {
 
     Workout workout;
+    User user;
     DBAdapter dbAdapter;
     ExerciseDAO exerciseDAO;
 
@@ -24,7 +25,7 @@ public class SelectExericsesActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         workout = (Workout)i.getSerializableExtra("Workout");
-
+        user = (User)i.getSerializableExtra("User");
         /// Set up action bar to contain Up button
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -54,6 +55,7 @@ public class SelectExericsesActivity extends AppCompatActivity {
                     Intent i = new Intent(SelectExericsesActivity.this, EditExerciseActivity.class);
                     i.putExtra("Workout", workout);
                     i.putExtra("Exercise", exercise);
+                    i.putExtra("User", user);
                     startActivity(i);
                 }
             });
@@ -66,6 +68,7 @@ public class SelectExericsesActivity extends AppCompatActivity {
 
         Intent i = new Intent(SelectExericsesActivity.this, CreateExerciseActivity.class);
         i.putExtra("Workout", workout);
+        i.putExtra("User", user);
         startActivity(i);
     }
 
@@ -77,6 +80,7 @@ public class SelectExericsesActivity extends AppCompatActivity {
             onBackPressed();
             Intent i = ApplicationParents.getInstance().parents.pop();
             i.putExtra("Workout", workout);
+            i.putExtra("User", user);
             startActivity(i);
             return true;
         }

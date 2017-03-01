@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -16,6 +18,8 @@ import java.util.ArrayList;
 public class EditExerciseActivity extends AppCompatActivity {
     Workout workout;
     Exercise exercise;
+    User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +32,13 @@ public class EditExerciseActivity extends AppCompatActivity {
         Intent i = getIntent();
         exercise = (Exercise)i.getSerializableExtra("Exercise");
         workout = (Workout)i.getSerializableExtra("Workout");
-
+        user = (User)i.getSerializableExtra("User");
         PopulateExerciseInfo(exercise);
+
+        // Only have option to remove exercise if not in your current workout
+        if(exercise.getWorkoutID() != workout.GetId()){
+            findViewById(R.id.bttnRemoveExerciseFromWorkout).setVisibility(View.GONE);
+        }
     }
 
     void PopulateExerciseInfo(Exercise exercise){
@@ -140,10 +149,24 @@ public class EditExerciseActivity extends AppCompatActivity {
         Intent i = new Intent(EditExerciseActivity.this, EditWorkoutActivity.class);
         // We need to populate the workout again
         i.putExtra("Workout", workout);
+        i.putExtra("Exercise", exercise);
+        i.putExtra("User", user);
         startActivity(i);
     }
 
-    public void deleteExerciseFromWorkout(View view){
+    public void removeExerciseFromWorkout(View view){
+        ExerciseDAO exerciseDAO = new ExerciseDAO();
+        try {
+            exerciseDAO.RemoveExerciseFromWorkout(exercise, this);
+            // Return to previous page
+            Intent i = ApplicationParents.getInstance().parents.pop();
+            i.putExtra("Workout", workout);
+            i.putExtra("Exercise", exercise);
+            i.putExtra("User", user);
+            startActivity(i);
+        }catch (Exception ex){
+            Log.e("TAG", "deleteExerciseFromWorkout: " + ex.getMessage());
+        }
 
     }
 
@@ -155,6 +178,8 @@ public class EditExerciseActivity extends AppCompatActivity {
             onBackPressed();
             Intent i = ApplicationParents.getInstance().parents.pop();
             i.putExtra("Workout", workout);
+            i.putExtra("Exercise", exercise);
+            i.putExtra("User", user);
             startActivity(i);
             return true;
         }

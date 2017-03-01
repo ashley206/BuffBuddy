@@ -20,21 +20,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".LoginActivity"
+            android:label="Login"/>
+        <activity
+            android:name=".RegisterActivity"
+            android:label="Register"/>
         <activity
             android:name=".CreateExerciseActivity"
-            android:parentActivityName=".SelectExericsesActivity"/>
+            android:parentActivityName=".SelectExericsesActivity"
+            android:label="Create an Exercise"/>
         <activity android:name=".HomeActivity" />
         <activity
             android:name=".SelectWorkoutActivity"
-            android:parentActivityName=".HomeActivity"></activity>
-        <activity android:name=".CreateWorkoutActivity" />
-        <activity android:name=".SelectExericsesActivity" />
+            android:parentActivityName=".HomeActivity"
+            android:label="Select A Workout"/>
+        <activity
+            android:name=".CreateWorkoutActivity"
+            android:label="Create a Workout"/>
+        <activity
+            android:name=".SelectExericsesActivity"
+            android:label="Select an Exercise"/>
         <activity
             android:name=".EditWorkoutActivity"
-            android:parentActivityName=".SelectWorkoutActivity"/>
-        <activity android:name=".EditExerciseActivity" />
+            android:parentActivityName=".SelectWorkoutActivity"
+            android:label="Edit Workout"/>
+        <activity
+            android:name=".EditExerciseActivity"
+            android:label="Edit Exercise"/>
         <activity android:name=".ProgressReportActivity"></activity>
     </application>
 

@@ -106,18 +106,24 @@
                     android:id="@+id/etRep6"
                     android:hint="Rep6"/>
             </RelativeLayout>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Save Exercise"
-                android:onClick="saveExerciseToWorkout"
-                android:layout_gravity="center"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Delete Exercise"
-                android:onClick="deleteExerciseFromWorkout"
-                android:layout_gravity="center"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Save Exercise"
+                    android:onClick="saveExerciseToWorkout"
+                    android:layout_gravity="center"/>
+                <Button
+                    android:id="@+id/bttnRemoveExerciseFromWorkout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Remove Exercise"
+                    android:onClick="removeExerciseFromWorkout"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

@@ -41,12 +41,19 @@
             android:text="Add Exercises"
             android:onClick="AddExercises"/>
         <Button
-            android:id="@+id/bttnCreateWorkout"
+            android:id="@+id/bttnSaveWorkout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Save Workout"
             android:onClick="SaveWorkout"/>
+        <Button
+            android:id="@+id/bttnDeleteWorkout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Delete Workout"
+            android:onClick="DeleteWorkout"/>
     </LinearLayout>
 
 </LinearLayout>

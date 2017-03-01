@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -60,6 +61,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
                 Intent i = new Intent(EditWorkoutActivity.this, EditExerciseActivity.class);
                 i.putExtra("Exercise", exercise);
                 i.putExtra("Workout", workout);
+                i.putExtra("User", user);
                 startActivity(i);
             }
         });
@@ -72,6 +74,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
 
         Intent i = new Intent(EditWorkoutActivity.this, SelectExericsesActivity.class);
         i.putExtra("Workout", workout);
+        i.putExtra("User", user);
         startActivity(i);
     }
 
@@ -87,12 +90,26 @@ public class EditWorkoutActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void DeleteWorkout(View v){
+        WorkoutDAO workoutDAO = new WorkoutDAO();
+        try{
+            workoutDAO.Delete(workout, this);
+            Intent i = new Intent(EditWorkoutActivity.this, SelectWorkoutActivity.class);
+            i.putExtra("User", user);
+            startActivity(i);
+        }
+        catch (Exception ex){
+            Log.e("TAG", "DeleteWorkout: " + ex.getMessage());
+        }
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
             onBackPressed();
             Intent i = new Intent(EditWorkoutActivity.this, SelectWorkoutActivity.class);
+            i.putExtra("Workout", workout);
             i.putExtra("User", user);
             startActivity(i);
             return true;

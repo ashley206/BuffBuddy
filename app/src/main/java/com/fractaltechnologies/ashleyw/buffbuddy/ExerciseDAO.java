@@ -168,6 +168,12 @@ public class ExerciseDAO implements IDAO<Exercise> {
         return exercises;
     }
 
+    public void RemoveExerciseFromWorkout(Exercise exercise, Context context){
+        // Disassociate the exercise from that workout
+        exercise.setWorkoutID(-1);
+        Update(exercise, context);
+    }
+
     private ContentValues getValues(Exercise e){
         ContentValues values = new ContentValues();
         String primary, secondary;
