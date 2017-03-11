@@ -141,13 +141,26 @@ public class MainActivity extends AppCompatActivity
             boolean exists = User.UserExists(result.getSignInAccount().getEmail(), new DBAdapter(this));
             // Valid account -> login and carry on to HomeActivity!
             if(exists){
-                User user = User.GoogleLogin(result.getSignInAccount().getEmail(), new DBAdapter(this));
-                Intent i = new Intent(MainActivity.this, HomeActivity.class);
-                i.putExtra("User", user);
-                startActivity(i);
+                try {
+                    User user = User.GoogleLogin(result.getSignInAccount().getEmail(), new DBAdapter(this));
+                    // Notify user that their Google account access worked
+                    Toast.makeText(this, "Successfully logged in via Google", Toast.LENGTH_SHORT);
+                    Intent i = new Intent(MainActivity.this, HomeActivity.class);
+                    i.putExtra("User", user);
+                    startActivity(i);
+                }
+                catch (Exception ex){
+                    Log.e(TAG, "handleSignInResult (Login): " + ex.getMessage());
+                    Toast.makeText(this, "An error occured while attempting to log in with Google", Toast.LENGTH_SHORT);
+                }
             }
             else{
-                User.GoogleRegister(result.getSignInAccount().getEmail(), new DBAdapter(this));
+                try {
+                    User.GoogleRegister(result.getSignInAccount().getEmail(), new DBAdapter(this));
+                }catch (Exception ex){
+                    Log.e(TAG, "handleSignInResult (Register): " + ex.getMessage());
+                    Toast.makeText(this, "An error occured while attempting to register with Google", Toast.LENGTH_SHORT);
+                }
             }
             // No valid account -> user needs to be registered
             updateUI(true);

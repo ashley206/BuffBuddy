@@ -79,6 +79,13 @@ public class WorkoutDAO implements IDAO<Workout> {
             } while (c.moveToNext());
         }
         c.close();
+        // Populate Exercises inside the workout
+        int workoutID = -1;
+        for(int i = 0; i < workouts.size(); i++){
+            workoutID = workouts.get(i).GetId();
+            workouts.get(i).SetExercises(FetchExercisesInWorkout(workoutID, context));
+        }
+
         return workouts;
     }
 

@@ -46,7 +46,7 @@ public class SelectWorkoutActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Workout workout = (Workout) listView.getItemAtPosition(position);
-                    Intent i = new Intent(SelectWorkoutActivity.this, EditWorkoutActivity.class);
+                    Intent i = new Intent(SelectWorkoutActivity.this, ViewWorkoutActivity.class);
                     i.putExtra("Workout", workout);
                     i.putExtra("User", user);
                     startActivity(i);

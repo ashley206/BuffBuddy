@@ -19,6 +19,7 @@ public class EditExerciseActivity extends AppCompatActivity {
     Workout workout;
     Exercise exercise;
     User user;
+    private static final String TAG = "EditExerciseActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +36,17 @@ public class EditExerciseActivity extends AppCompatActivity {
         user = (User)i.getSerializableExtra("User");
         PopulateExerciseInfo(exercise);
 
-        // Only have option to remove exercise if not in your current workout
+        // Not in current workout
         if(exercise.getWorkoutID() != workout.GetId()){
+            // Cannot remove an exercise not in your workout
             findViewById(R.id.bttnRemoveExerciseFromWorkout).setVisibility(View.GONE);
+            // Can add an exercise not in your workout
+            findViewById(R.id.bttnAddExerciseToWorkout).setVisibility(View.VISIBLE);
+        }
+        else{
+            findViewById(R.id.bttnRemoveExerciseFromWorkout).setVisibility(View.VISIBLE);
+            // Can add an exercise not in your workout
+            findViewById(R.id.bttnAddExerciseToWorkout).setVisibility(View.GONE);
         }
     }
 
@@ -71,7 +80,6 @@ public class EditExerciseActivity extends AppCompatActivity {
         }
         //// Edit Text list
         final EditText etName = (EditText)findViewById(R.id.etExerciseName);
-        final EditText etSets = (EditText)findViewById(R.id.etSets);
         final EditText etRep1 = (EditText)findViewById(R.id.etRep1);
         final EditText etRep2 = (EditText)findViewById(R.id.etRep2);
         final EditText etRep3 = (EditText)findViewById(R.id.etRep3);
@@ -87,7 +95,6 @@ public class EditExerciseActivity extends AppCompatActivity {
         editTextArrayList.add(etRep6);
 
         etName.setText(exercise.getName());
-        etSets.setText(String.valueOf(exercise.getSets()));
 
         ArrayList<Integer> reps = exercise.getReps();
         for(int i = 0; i < reps.size(); i++){
@@ -165,10 +172,76 @@ public class EditExerciseActivity extends AppCompatActivity {
             i.putExtra("User", user);
             startActivity(i);
         }catch (Exception ex){
-            Log.e("TAG", "deleteExerciseFromWorkout: " + ex.getMessage());
+            Log.e(TAG, "removeExerciseFromWorkout: " + ex.getMessage());
         }
 
     }
+
+    public void addExerciseToWorkout(View view){
+        final EditText etName = (EditText) findViewById(R.id.etExerciseName);
+        final Spinner spPMG = (Spinner) findViewById(R.id.spTargetMuscleP);
+        final Spinner spSMG = (Spinner) findViewById(R.id.spTargetMuscleS);
+        final EditText etRep1 = (EditText) findViewById(R.id.etRep1);
+        final EditText etRep2 = (EditText) findViewById(R.id.etRep2);
+        final EditText etRep3 = (EditText) findViewById(R.id.etRep3);
+        final EditText etRep4 = (EditText) findViewById(R.id.etRep4);
+        final EditText etRep5 = (EditText) findViewById(R.id.etRep5);
+        final EditText etRep6 = (EditText) findViewById(R.id.etRep6);
+
+        // Set exercise object's info
+        Exercise dupExercise = new Exercise(etName.getText().toString());
+
+        // Ensure only a selected value is saved to the database
+        if (spPMG.getSelectedItemPosition() != 0) {
+            dupExercise.setPrimaryTargetMuscle(TargetMuscle.fromString(spPMG.getSelectedItem().toString()));
+        }
+        else{
+            dupExercise.setPrimaryTargetMuscle(null);
+        }
+        if(spSMG.getSelectedItemPosition() != 0) {
+            dupExercise.setSecondaryTargetMuscle(TargetMuscle.fromString(spSMG.getSelectedItem().toString()));
+        }
+        else {
+            dupExercise.setSecondaryTargetMuscle(null);
+        }
+
+        // Get the reps, but only the reps actually filled out
+        ArrayList<EditText> editTextArrayList = new ArrayList<EditText>();
+        editTextArrayList.add(etRep1);
+        editTextArrayList.add(etRep2);
+        editTextArrayList.add(etRep3);
+        editTextArrayList.add(etRep4);
+        editTextArrayList.add(etRep5);
+        editTextArrayList.add(etRep6);
+        ArrayList<Integer> reps = new ArrayList<Integer>();
+        // Iterate over EditText objects and get all viable reps
+        for(int i = 0; i < editTextArrayList.size(); i++){
+            if(!editTextArrayList.get(i).getText().toString().equals(""))
+                reps.add(Integer.parseInt(editTextArrayList.get(i).getText().toString()));
+        }
+        dupExercise.setReps(reps);
+        dupExercise.setSets(reps.size());   // True number of reps
+
+        dupExercise.setWorkoutID(workout.GetId());
+
+        ExerciseDAO exerciseDAO = new ExerciseDAO();
+        try{
+            // Creating a copy of that exercise to add to this workout.
+            // Simply updating the workout ID will not work -- That will remove the exercise from
+            // the previous ID's workout.
+            exerciseDAO.Create(dupExercise, this);
+            Intent i = ApplicationParents.getInstance().parents.pop();
+            i.putExtra("Workout", workout);
+            i.putExtra("Exercise", exercise);
+            i.putExtra("User", user);
+            startActivity(i);
+        }catch (Exception ex){
+            Log.e(TAG, "addExerciseToWorkout: " + ex.getMessage());
+
+        }
+    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

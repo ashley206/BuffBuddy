@@ -24,8 +24,6 @@ public class HomeActivity extends AppCompatActivity {
         user = (User)i.getSerializableExtra("User");
 
         ListView lv = (ListView)findViewById(R.id.lvWorkouts);
-
-
     }
 
     public void BeginWorkout(View v){

@@ -49,10 +49,9 @@ public class CreateExerciseActivity extends AppCompatActivity {
         spinnerSecondary.setSelection(0);
     }
 
-    public void addExercise(View v){
+    public void CreateExercise(View v){
         // So many values
         final EditText etName = (EditText)findViewById(R.id.etExerciseName);
-        final EditText etSets = (EditText)findViewById(R.id.etSets);
         final Spinner spPMG = (Spinner)findViewById(R.id.spTargetMuscleP);
         final Spinner spSMG = (Spinner)findViewById(R.id.spTargetMuscleS);
         final EditText etRep1 = (EditText)findViewById(R.id.etRep1);
@@ -63,7 +62,6 @@ public class CreateExerciseActivity extends AppCompatActivity {
         final EditText etRep6 = (EditText)findViewById(R.id.etRep6);
 
         Exercise exercise = new Exercise(etName.getText().toString());
-        exercise.setSets(Integer.parseInt(etSets.getText().toString()));
 
         // Ensure values in target muscle spinners are valid
         if(spPMG.getSelectedItemPosition() != 0){
@@ -102,6 +100,7 @@ public class CreateExerciseActivity extends AppCompatActivity {
 
         Intent i = new Intent(CreateExerciseActivity.this, EditWorkoutActivity.class);
         i.putExtra("Workout", workout);
+        i.putExtra("User", user);
         startActivity(i);
     }
 

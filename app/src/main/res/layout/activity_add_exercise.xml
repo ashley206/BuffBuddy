@@ -31,15 +31,6 @@
                     />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/etSets"
-                    android:hint="@string/prompt_exSets"/>
-            </android.support.design.widget.TextInputLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -62,55 +53,65 @@
             </Spinner>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal">
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:id="@+id/etRep1"
-                    android:hint="Rep1"/>
+                    android:hint="Rep1"
+                    android:inputType="number"/>
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/etRep1"
                     android:id="@+id/etRep2"
-                    android:hint="Rep2"/>
+                    android:hint="Rep2"
+                    android:inputType="number"/>
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/etRep2"
                     android:id="@+id/etRep3"
-                    android:hint="Rep3"/>
+                    android:hint="Rep3"
+                    android:inputType="number"/>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal">
             <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/etRep4"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
-                    android:hint="Rep4"/>
+                    android:hint="Rep4"
+                android:inputType="number"/>
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/etRep4"
                     android:id="@+id/etRep5"
-                    android:hint="Rep5"/>
+                    android:hint="Rep5"
+                    android:inputType="number"/>
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/etRep5"
                     android:id="@+id/etRep6"
-                    android:hint="Rep6"/>
+                    android:hint="Rep6"
+                    android:inputType="number"/>
             </RelativeLayout>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Add Exercise"
-                android:onClick="addExercise"
+                android:text="Create Exercise"
+                android:onClick="CreateExercise"
                 android:layout_gravity="center"/>
         </LinearLayout>
     </ScrollView>

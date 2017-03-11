@@ -20,34 +20,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
-            android:label="Login"/>
+        <activity
+            android:name=".LoginActivity"
+            android:label="Login" />
         <activity
             android:name=".RegisterActivity"
-            android:label="Register"/>
+            android:label="Register" />
         <activity
             android:name=".CreateExerciseActivity"
-            android:parentActivityName=".SelectExericsesActivity"
-            android:label="Create an Exercise"/>
+            android:label="Create an Exercise"
+            android:parentActivityName=".SelectExericsesActivity" />
         <activity android:name=".HomeActivity" />
         <activity
             android:name=".SelectWorkoutActivity"
-            android:parentActivityName=".HomeActivity"
-            android:label="Select A Workout"/>
+            android:label="Select A Workout"
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".CreateWorkoutActivity"
-            android:label="Create a Workout"/>
+            android:label="Create a Workout" />
         <activity
             android:name=".SelectExericsesActivity"
-            android:label="Select an Exercise"/>
+            android:label="Select an Exercise" />
         <activity
             android:name=".EditWorkoutActivity"
-            android:parentActivityName=".SelectWorkoutActivity"
-            android:label="Edit Workout"/>
+            android:label="Edit Workout"
+            android:parentActivityName=".ViewWorkoutActivity" />
         <activity
             android:name=".EditExerciseActivity"
-            android:label="Edit Exercise"/>
-        <activity android:name=".ProgressReportActivity"></activity>
+            android:label="Edit Exercise" />
+        <activity
+            android:name=".ProgressReportActivity"
+            android:parentActivityName=".SelectWorkoutActivity"
+            />
+        <activity
+            android:name=".ViewWorkoutActivity"
+            android:parentActivityName=".SelectWorkoutActivity" />
+        <activity android:name=".PerformWorkoutActivity"></activity>
     </application>
 
 </manifest>
