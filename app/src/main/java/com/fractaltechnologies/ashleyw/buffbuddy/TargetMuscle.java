@@ -1,5 +1,14 @@
 package com.fractaltechnologies.ashleyw.buffbuddy;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.StringDef;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 /**
  * Created by Ashley H on 1/19/2017.
  */
@@ -43,5 +52,21 @@ public enum TargetMuscle {
             }
         }
         return null;
+    }
+
+    public static ArrayList<String> getTargetMusclesAsStrings(){
+        ArrayList<String> muscles = new ArrayList<String>();
+        for(TargetMuscle muscle : values()){
+            muscles.add(muscle.toString());
+        }
+        return muscles;
+    }
+
+    public static ArrayList<TargetMuscle> getTargetMuscles(){
+        ArrayList<TargetMuscle> muscles = new ArrayList<TargetMuscle>();
+        for(TargetMuscle muscle : values()){
+            muscles.add(muscle);
+        }
+        return muscles;
     }
 }

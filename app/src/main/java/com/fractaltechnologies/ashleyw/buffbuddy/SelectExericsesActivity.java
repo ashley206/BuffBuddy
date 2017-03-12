@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import java.util.ArrayList;
 
@@ -17,6 +20,7 @@ public class SelectExericsesActivity extends AppCompatActivity {
     User user;
     DBAdapter dbAdapter;
     ExerciseDAO exerciseDAO;
+    ExerciseAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +38,11 @@ public class SelectExericsesActivity extends AppCompatActivity {
         // Exercises that exists for this workout need to be populated
         ArrayList<Exercise> exercises = new ArrayList<Exercise>();
         exerciseDAO = new ExerciseDAO();
-        exercises = exerciseDAO.FetchAllNotInWorkout(this, workout.GetId());
+        exercises = exerciseDAO.FetchAllNotInWorkout(this, workout.getId());
 
         if(exercises != null) {
             // Create unique adapter to convert array to views
-            ExerciseAdapter adapter = new ExerciseAdapter(this, exercises);
+            adapter = new ExerciseAdapter(this, exercises);
 
             // Attach adapter to ListView
             final ListView listView = (ListView) findViewById(R.id.lvExercises);
@@ -70,6 +74,31 @@ public class SelectExericsesActivity extends AppCompatActivity {
         i.putExtra("Workout", workout);
         i.putExtra("User", user);
         startActivity(i);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Grab the menu and inflate it
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        // Find the proper item and put it in the search view
+        MenuItem item = menu.findItem(R.id.menuSearch);
+        SearchView searchView = (SearchView)item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextSubmit(String query){
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText){
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

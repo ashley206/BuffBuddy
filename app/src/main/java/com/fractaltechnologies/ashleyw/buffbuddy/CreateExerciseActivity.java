@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 
 public class CreateExerciseActivity extends AppCompatActivity {
@@ -93,7 +91,7 @@ public class CreateExerciseActivity extends AppCompatActivity {
 
         exercise.setReps(reps);
         exercise.setSets(reps.size());   // True number of reps
-        exercise.setWorkoutID(workout.GetId());
+        exercise.setWorkoutID(workout.getId());
 
         ExerciseDAO exerciseDAO = new ExerciseDAO();
         exerciseDAO.Create(exercise, this);

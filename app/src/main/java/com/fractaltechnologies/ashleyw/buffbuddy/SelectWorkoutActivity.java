@@ -19,6 +19,7 @@ public class SelectWorkoutActivity extends AppCompatActivity {
     User user;
     WorkoutDAO workoutDAO;
     WorkoutAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

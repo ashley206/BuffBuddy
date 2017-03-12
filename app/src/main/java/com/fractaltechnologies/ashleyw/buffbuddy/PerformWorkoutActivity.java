@@ -29,7 +29,7 @@ public class PerformWorkoutActivity extends AppCompatActivity {
         workout = (Workout)i.getSerializableExtra("Workout");
         user = (User)i.getSerializableExtra("User");
 
-        exercises = workout.GetExercises();
+        exercises = workout.getExercises();
         InitPerformWorkout(workout, exercises, currentExerciseIndex);
     }
 
@@ -52,23 +52,40 @@ public class PerformWorkoutActivity extends AppCompatActivity {
     }
 
     public void NextExercise(View v){
-        PromptForWeightEntry();
+        final EditText weightInput = new EditText(PerformWorkoutActivity.this);
 
-        // Increment the current exercise being performed
-        currentExerciseIndex++;
+        AlertDialog.Builder builder = new AlertDialog.Builder(PerformWorkoutActivity.this);
+        builder.setTitle("Exercise Completed");
+        builder.setMessage("Enter the weight used for this exercise.");
+        builder.setView(weightInput);
+        // procedure for when the ok button is clicked.
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                weight = weightInput.getText().toString();
+                // Pass this to the database to update the personal progress table
+                int exerciseID = exercises.get(currentExerciseIndex).getID();
+                int userID = user.getID();
+                // Increment the current exercise being performed
+                currentExerciseIndex++;
 
-        // Assure the next exercise is valid
-        if(currentExerciseIndex == exercises.size()){
-            // Take you to home screen to show a workout was completed -- the one
-            Intent i = new Intent(PerformWorkoutActivity.this, HomeActivity.class);
-            i.putExtra("User", user);
-            i.putExtra("Workout", workout);
-            startActivity(i);
-        }
-        else{
-            // Initialize the next workout
-            InitPerformWorkout(workout, exercises, currentExerciseIndex);
-        }
+                // Assure the next exercise is valid
+                if(currentExerciseIndex == exercises.size()){
+                    // Take you to home screen to show a workout was completed -- the one
+                    Intent i = new Intent(PerformWorkoutActivity.this, HomeActivity.class);
+                    i.putExtra("User", user);
+                    i.putExtra("Workout", workout);
+                    startActivity(i);
+                }
+                else{
+                    // Initialize the next workout
+                    InitPerformWorkout(workout, exercises, currentExerciseIndex);
+                }
+            }
+        });
+
+        builder.show();
+
+
     }
 
     void promptForResult(String dlgTitle, String dlgMessage, String positiveMsg, String negativeMsg, final DialogInputInterface dlg) {
@@ -86,10 +103,10 @@ public class PerformWorkoutActivity extends AppCompatActivity {
         // procedure for when the ok button is clicked.
         builder.setPositiveButton(positiveMsg, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // ** HERE IS WHERE THE MAGIC HAPPENS! **
-                dlg.onResult(v);
-                dialog.dismiss();
-                return;
+                //weight = weightInput.getText().toString();
+                // Pass this to the database to update the personal progress table
+                int exerciseID = exercises.get(currentExerciseIndex).getID();
+                int userID = user.getID();
             }
         });
 

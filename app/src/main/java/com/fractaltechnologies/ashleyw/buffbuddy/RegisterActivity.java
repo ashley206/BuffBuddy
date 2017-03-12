@@ -10,9 +10,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.regex.Pattern;
+
 public class RegisterActivity extends AppCompatActivity {
     User user = new User();
     DBAdapter db;
+
+    // A password is required to have an uppercase, lowercase, number
+    private static final Pattern [] passwordRegexes = new Pattern[4];
+    {
+        passwordRegexes[0] = Pattern.compile(".*[A-Z].*");
+        passwordRegexes[1] = Pattern.compile(".*[a-z].*");
+        passwordRegexes[2] = Pattern.compile(".*\\d.*");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,12 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, "Passwords must match", Toast.LENGTH_LONG);
             valid = false;
         }
+        // Ensures the password is valid in the context of this application
+        if(!isLegalPassword(password)){
+            Toast.makeText(this, "Password must contain at least one uppercase, one lowercase, one " +
+                    "number, and be at least 8 characters long.", Toast.LENGTH_LONG);
+            valid = false;
+        }
         if(valid) {
             // Determine if the user successfully logged in
             if (User.Register(username, email, password, confirmPassword, fname, lname, db)) {
@@ -62,6 +78,20 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(RegisterActivity.this, "Failed to register. Try again.", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+
+    // Ensures that the password entered has an uppercase, lowercase, and a number
+    public boolean isLegalPassword(String password) {
+        // Iterate over requirement regexes and ensure all are valid
+        for(int i = 0; i < passwordRegexes.length; i++){
+            if(!passwordRegexes[i].matcher(password).matches())
+                return false;
+        }
+        if(password.length() < 8){
+            return false;
+        }
+        return true;
     }
 
     @Override

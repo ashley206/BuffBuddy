@@ -5,7 +5,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class ViewWorkoutActivity extends AppCompatActivity {
         // Exercises that exists for this workout need to be populated
         ArrayList<Exercise> exercises = new ArrayList<Exercise>();
         workoutDAO = new WorkoutDAO();
-        exercises = workoutDAO.FetchExercisesInWorkout(workout.GetId(), this);
+        exercises = workoutDAO.FetchExercisesInWorkout(workout.getId(), this);
 
         // Create unique adapter to convert array to views
         adapter = new ExerciseAdapter(this, exercises);

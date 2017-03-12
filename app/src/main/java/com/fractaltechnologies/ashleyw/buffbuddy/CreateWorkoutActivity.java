@@ -30,7 +30,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
             WorkoutDAO workoutDAO = new WorkoutDAO();
             // TODO: What if this fails? (duplicates, other reasons)
             workoutDAO.Create(workout, this);
-            workout = workoutDAO.FindByName(workout.GetName(), this);   // This will also retrieve the ID
+            workout = workoutDAO.FindByName(workout.getName(), this);   // This will also retrieve the ID
             try {
                 Intent i = new Intent(CreateWorkoutActivity.this, EditWorkoutActivity.class);
                 i.putExtra("Workout", workout);

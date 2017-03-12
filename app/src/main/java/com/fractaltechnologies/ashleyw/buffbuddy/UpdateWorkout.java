@@ -26,7 +26,7 @@ public class UpdateWorkout extends AppCompatActivity {
         // Exercises that exists for this workout need to be populated
         ArrayList<Exercise> exercises = new ArrayList<Exercise>();
         workoutDAO  = new WorkoutDAO();
-        exercises = workoutDAO.FetchExercisesInWorkout(workout.GetId(), this);
+        exercises = workoutDAO.FetchExercisesInWorkout(workout.getId(), this);
 
         // Create unique adapter to convert array to views
         ExerciseAdapter adapter = new ExerciseAdapter(this, exercises);
@@ -44,7 +44,7 @@ public class UpdateWorkout extends AppCompatActivity {
         // Update workout name
         EditText etName = (EditText)findViewById(R.id.etName);
         final String name = etName.getText().toString();
-        workout.SetName(name);
+        workout.setName(name);
         // This will update the workout in the database, given the workout ID
         WorkoutDAO workoutDAO = new WorkoutDAO();
         workoutDAO.Update(workout, this);

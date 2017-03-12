@@ -37,37 +37,28 @@ public class Workout implements Serializable {
         m_exercises = exercises;
     }
 
-    public String GetName(){
+    public String getName(){
         return this.m_name;
     }
 
-    public void SetName(String name){
+    public void setName(String name){
         m_name = name;
     }
 
-    public int GetId(){
+    public int getId(){
         return m_id;
     }
 
-    public void SetId(int id){
+    public void setId(int id){
         m_id = id;
     }
 
-    public ArrayList<Exercise> GetExercises(){
+    public ArrayList<Exercise> getExercises(){
         return this.m_exercises;
     }
 
-    public void SetExercises(ArrayList<Exercise> exercises){
+    public void setExercises(ArrayList<Exercise> exercises){
         m_exercises = exercises;
-    }
-
-    public Workout SelectWorkout(){
-        return this;
-    }
-
-    public Exercise GetNextExercise(){
-        // TODO: Return to this and do it properly
-        return m_exercises.get(0);
     }
 
     private boolean LastExercise(Exercise e){

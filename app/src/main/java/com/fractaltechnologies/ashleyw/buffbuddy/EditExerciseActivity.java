@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -37,7 +36,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         PopulateExerciseInfo(exercise);
 
         // Not in current workout
-        if(exercise.getWorkoutID() != workout.GetId()){
+        if(exercise.getWorkoutID() != workout.getId()){
             // Cannot remove an exercise not in your workout
             findViewById(R.id.bttnRemoveExerciseFromWorkout).setVisibility(View.GONE);
             // Can add an exercise not in your workout
@@ -222,7 +221,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         dupExercise.setReps(reps);
         dupExercise.setSets(reps.size());   // True number of reps
 
-        dupExercise.setWorkoutID(workout.GetId());
+        dupExercise.setWorkoutID(workout.getId());
 
         ExerciseDAO exerciseDAO = new ExerciseDAO();
         try{

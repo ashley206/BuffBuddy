@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -36,12 +35,12 @@ public class EditWorkoutActivity extends AppCompatActivity {
 
         // Populate the editText field with the existing name
         final EditText etName = (EditText)findViewById(R.id.etName);
-        etName.setText(workout.GetName());
+        etName.setText(workout.getName());
 
         // Exercises that exists for this workout need to be populated
         ArrayList<Exercise> exercises = new ArrayList<Exercise>();
         workoutDAO = new WorkoutDAO();
-        exercises = workoutDAO.FetchExercisesInWorkout(workout.GetId(), this);
+        exercises = workoutDAO.FetchExercisesInWorkout(workout.getId(), this);
 
         // Create unique adapter to convert array to views
         adapter = new ExerciseAdapter(this, exercises);
@@ -80,7 +79,7 @@ public class EditWorkoutActivity extends AppCompatActivity {
 
     public void SaveWorkout(View v){
         final EditText etName = (EditText)findViewById(R.id.etName);
-        workout.SetName(etName.getText().toString());
+        workout.setName(etName.getText().toString());
         workoutDAO.Update(workout, this);
 
         Toast.makeText(this, "Successfully updated!", Toast.LENGTH_SHORT).show();

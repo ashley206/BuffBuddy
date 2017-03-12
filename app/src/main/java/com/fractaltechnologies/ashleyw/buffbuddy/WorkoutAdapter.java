@@ -1,18 +1,14 @@
 package com.fractaltechnologies.ashleyw.buffbuddy;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +19,7 @@ import java.util.List;
 
 public class WorkoutAdapter extends BaseAdapter implements Filterable {
 
-    private static final String LOG_TAG = "WorkoutAdapter";
+    private static final String TAG = "WorkoutAdapter";
     private static ArrayList<Workout> workoutArrayList;
     private static ArrayList<Workout> filteredArrayList;
     private LayoutInflater layoutInflater;
@@ -60,11 +56,11 @@ public class WorkoutAdapter extends BaseAdapter implements Filterable {
                 viewHolder = (ViewHolder)convertView.getTag();
             }
             // Data population
-            viewHolder.name.setText(filteredArrayList.get(position).GetName());
+            viewHolder.name.setText(filteredArrayList.get(position).getName());
             //viewHolder.primary.setText();
         }
         catch (Exception ex) {
-            Log.e("TAG", LOG_TAG + ex);
+            Log.e(TAG, "getView: " + ex);
         }
         return convertView;
     }
@@ -100,7 +96,7 @@ public class WorkoutAdapter extends BaseAdapter implements Filterable {
             String filterableString ;
 
             for (int i = 0; i < count; i++) {
-                filterableString = list.get(i).GetName();
+                filterableString = list.get(i).getName();
                 if (filterableString.toLowerCase().contains(filterString)) {
                     nlist.add(filterableString);
                 }
@@ -118,6 +114,5 @@ public class WorkoutAdapter extends BaseAdapter implements Filterable {
             filteredArrayList = (ArrayList<Workout>) results.values;
             notifyDataSetChanged();
         }
-
     }
 }

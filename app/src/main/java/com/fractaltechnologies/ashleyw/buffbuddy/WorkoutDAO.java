@@ -3,11 +3,9 @@ package com.fractaltechnologies.ashleyw.buffbuddy;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 
 /**
@@ -21,7 +19,7 @@ public class WorkoutDAO implements IDAO<Workout> {
         // TODO: This should check if a workout name already exists
         DBAdapter dbAdapter = new DBAdapter(context);
         ContentValues values = new ContentValues();
-        values.put("NAME", workout.GetName());
+        values.put("NAME", workout.getName());
         values.put("USER_ID", String.valueOf(((CreateWorkoutActivity) context).user.getID()));
         dbAdapter.openWrite().Create("WORKOUT", values);
     }
@@ -30,14 +28,14 @@ public class WorkoutDAO implements IDAO<Workout> {
     public void Update(Workout workout, Context c){
         DBAdapter dbAdapter = new DBAdapter(c);
         ContentValues values = new ContentValues();
-        values.put("NAME", workout.GetName());
-        String [] whereArgs = { String.valueOf(workout.GetId()) };
+        values.put("NAME", workout.getName());
+        String [] whereArgs = { String.valueOf(workout.getId()) };
         dbAdapter.openWrite().Update("WORKOUT", values, "ID = ?", whereArgs);
     }
     @Override
     public void Delete(Workout workout, Context context){
         DBAdapter dbAdapter = new DBAdapter(context);
-        String [] whereArgs = { String.valueOf(workout.GetId()) };
+        String [] whereArgs = { String.valueOf(workout.getId()) };
         dbAdapter.openWrite().Delete("WORKOUT", "ID = ?", whereArgs);
     }
 
@@ -82,8 +80,8 @@ public class WorkoutDAO implements IDAO<Workout> {
         // Populate Exercises inside the workout
         int workoutID = -1;
         for(int i = 0; i < workouts.size(); i++){
-            workoutID = workouts.get(i).GetId();
-            workouts.get(i).SetExercises(FetchExercisesInWorkout(workoutID, context));
+            workoutID = workouts.get(i).getId();
+            workouts.get(i).setExercises(FetchExercisesInWorkout(workoutID, context));
         }
 
         return workouts;
