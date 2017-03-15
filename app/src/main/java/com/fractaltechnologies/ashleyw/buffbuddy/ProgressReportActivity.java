@@ -6,11 +6,14 @@ import android.database.sqlite.SQLiteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.lang.reflect.Array;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -19,6 +22,7 @@ public class ProgressReportActivity extends AppCompatActivity {
     private final static String TAG = "ProgressReportActivity";
     Exercise exercise;
     GraphView graphView;
+    ArrayList<Exercise> exercises;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +30,19 @@ public class ProgressReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_progress_report);
 
         Intent i = getIntent();
-        exercise = (Exercise)i.getSerializableExtra("Exercise");
+
+        ExerciseDAO exerciseDAO = new ExerciseDAO();
+        exercises = exerciseDAO.FetchAll(this);
+        Spinner spinnerExercise = (Spinner)findViewById(R.id.spExercises);
+        // Create an ArrayAdapter using the the default spinner layout
+        ArrayAdapter<Exercise> adapter = new ArrayAdapter<Exercise>(
+                getApplicationContext(),
+                R.layout.support_simple_spinner_dropdown_item,
+                exercises);
+        // Specifying the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply similar adapters to both spinners
+        spinnerExercise.setAdapter(adapter);
 
     }
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -64,5 +65,20 @@ public class ViewWorkoutActivity extends AppCompatActivity {
         i.putExtra("User", user);
         i.putExtra("Workout", workout);
         startActivity(i);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            onBackPressed();
+            Intent i = new Intent(ViewWorkoutActivity.this, SelectWorkoutActivity.class);
+            i.putExtra("User", user);
+            startActivity(i);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

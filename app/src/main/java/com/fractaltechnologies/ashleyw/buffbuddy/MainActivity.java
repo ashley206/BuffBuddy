@@ -43,6 +43,17 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SQLiteHelper helper = new SQLiteHelper(this);
+        //this.deleteDatabase(helper.getDatabaseName());
+
+//        DBAdapter dbAdapter = new DBAdapter(this);
+//        Cursor c = dbAdapter.openRead().getDBInstance().rawQuery("SELECT * FROM USER", null);
+//        c.moveToFirst();
+//        int id = c.getInt(c.getColumnIndex("ID"));
+//        c = dbAdapter.openRead().getDBInstance().rawQuery("SELECT * FROM WORKOUT WHERE USER_ID = ?", new String[] {String.valueOf(id)});
+//        c.moveToFirst();
+//        String name = c.getString(c.getColumnIndex("NAME"));
+
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -156,7 +167,14 @@ public class MainActivity extends AppCompatActivity
             }
             else{
                 try {
-                    User.GoogleRegister(result.getSignInAccount().getEmail(), new DBAdapter(this));
+                    int userId = User.GoogleRegister(result.getSignInAccount().getEmail(), new DBAdapter(this));
+                    if(userId > 0){
+                        WorkoutDAO workoutDAO = new WorkoutDAO();
+                        workoutDAO.InitDefaultWorkoutExerciseInformation(userId, this);
+                    }
+                    else{
+                        Toast.makeText(this, "An error occured while attempting to register with Google", Toast.LENGTH_SHORT);
+                    }
                 }catch (Exception ex){
                     Log.e(TAG, "handleSignInResult (Register): " + ex.getMessage());
                     Toast.makeText(this, "An error occured while attempting to register with Google", Toast.LENGTH_SHORT);

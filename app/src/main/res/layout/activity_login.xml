@@ -55,6 +55,7 @@
                 android:id="@+id/bttnLogin"
                 android:text="Log In"
                 android:textStyle="bold"
+                android:onClick="Login"
                 />
 
 

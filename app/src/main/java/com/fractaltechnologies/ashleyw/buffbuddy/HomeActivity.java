@@ -35,6 +35,13 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void ExerciseProgressReport(View v){
+        // Pass the user along to the Select Workout page
+        Intent i = new Intent(HomeActivity.this, ProgressReportActivity.class);
+        i.putExtra("User", user);
+        startActivity(i);
+    }
+
     private void fillListView(ArrayList<Workout> workouts){
         // When we get here to showing the completed workout(s), we can take the progress report,
         // find if an exercise was done today, and if so, grab the associated WorkoutID IF IT EXISTS,

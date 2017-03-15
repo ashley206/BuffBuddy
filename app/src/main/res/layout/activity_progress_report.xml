@@ -20,6 +20,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvExerciseName"/>
 
+    <Spinner
+        android:id="@+id/spExercises"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></Spinner>
+
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
         android:layout_height="200dip"

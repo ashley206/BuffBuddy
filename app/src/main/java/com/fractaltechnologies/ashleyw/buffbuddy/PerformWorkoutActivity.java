@@ -1,13 +1,19 @@
 package com.fractaltechnologies.ashleyw.buffbuddy;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import java.util.ArrayList;
 
@@ -16,9 +22,12 @@ public class PerformWorkoutActivity extends AppCompatActivity {
 
     Workout workout;
     User user;
+
     ArrayList<Exercise> exercises;
     int currentExerciseIndex = 0;
     String weight = "";
+    private final static String TAG = "PerformWorkoutActivity";
+    DBAdapter dbAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +74,20 @@ public class PerformWorkoutActivity extends AppCompatActivity {
                 // Pass this to the database to update the personal progress table
                 int exerciseID = exercises.get(currentExerciseIndex).getID();
                 int userID = user.getID();
+                // Create values to put into database
+                ContentValues values = new ContentValues();
+                values.put("EXERCISE_ID", exerciseID);
+                values.put("USER_ID", user.getID());
+                values.put("WEIGHT", weight);
+                values.put("DATE_COMPLETED",  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+                // Conduct insert
+                try {
+                    dbAdapter = new DBAdapter(PerformWorkoutActivity.this);
+                    dbAdapter.openWrite().getDBInstance().insert("PROGRESS_HISTORY", null, values);
+                }
+                catch (Exception ex){
+                    Log.e(TAG, "NextExercise: " + ex.getMessage());
+                }
                 // Increment the current exercise being performed
                 currentExerciseIndex++;
 

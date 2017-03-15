@@ -50,7 +50,8 @@
             android:label="Edit Exercise" />
         <activity
             android:name=".ProgressReportActivity"
-            android:parentActivityName=".SelectWorkoutActivity"
+            android:label="Progress Report"
+            android:parentActivityName=".HomeActivity"
             />
         <activity
             android:name=".ViewWorkoutActivity"

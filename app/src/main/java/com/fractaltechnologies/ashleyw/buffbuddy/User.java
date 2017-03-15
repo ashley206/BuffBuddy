@@ -45,10 +45,6 @@ public class User implements Serializable {
         m_google = google;
     }
 
-    public void PerformWorkout(Workout wo){
-        // TODO: Come back and complete
-    }
-
     public static boolean UserExists(String email, DBAdapter db){
         return db.UserExists(email);
     }
@@ -63,15 +59,12 @@ public class User implements Serializable {
     }
 
     public static boolean Register(String username, String email, String password, String cPassword, String fname, String lname, DBAdapter db){
-        boolean success = false;
-        if(db.Register(username, email, password, fname, lname))
-            success = true;
-        return success;
+        return db.Register(username, email, password, fname, lname);
     }
 
     // Can only be passed email because no assumptions can be made about the format of other
     // information Google mayy have (ie. given name, display name, etc.)
-    public static boolean GoogleRegister(String email, DBAdapter db){
+    public static int GoogleRegister(String email, DBAdapter db){
         return db.GoogleRegister(email);
     }
 
@@ -97,6 +90,10 @@ public class User implements Serializable {
 
     public int getID(){
         return m_id;
+    }
+
+    public static int GetIDFromDatabase(String email, DBAdapter db){
+        return db.getUserId(email);
     }
 
 }

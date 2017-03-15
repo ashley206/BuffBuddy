@@ -20,6 +20,7 @@ import java.util.Vector;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
 
+    private final static String TAG = "SQLiteHelper";
     private static String DATABASE_PATH = "/data/user/0/com.fractaltechnologies.ashleyw.buffbuddy/databases/";
     private static final String DATABASE_NAME = "buffbuddy.sqlite";
     private static final int DATABASE_VERSION = 3;
@@ -48,7 +49,58 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     // for this application.
     @Override
     public void onCreate(SQLiteDatabase db){
+        try {
+            String createSQL = "CREATE TABLE IF NOT EXISTS USER(\n" +
+                    "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                    "    FIRSTNAME TEXT,\n" +
+                    "    LASTNAME TEXT,\n" +
+                    "    USERNAME TEXT,\n" +
+                    "    EMAIL TEXT,\n" +
+                    "    PASSWORD TEXT,\n" +
+                    "    GOOGLEACCOUNT INTEGER\n" +
+                    "    )";
+            db.execSQL(createSQL);
 
+            createSQL = "CREATE TABLE IF NOT EXISTS WORKOUT(\n" +
+                    "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                    "    USER_ID INTEGER, \n" +
+                    "    NAME TEXT,\n" +
+                    "    FOREIGN KEY(USER_ID) REFERENCES USER(ID)\n" +
+                    "    )";
+                    db.execSQL(createSQL);
+
+            createSQL = "CREATE TABLE IF NOT EXISTS EXERCISE (\n" +
+                    "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                    "    NAME TEXT,\n" +
+                    "    PRIMARY_TARGET_MUSCLE TEXT,\n" +
+                    "    SECONDARY_TARGET_MUSCLE TEXT,\n" +
+                    "    SETS INTEGER,\n" +
+                    "    REP1 INTEGER, REP2 INTEGER, REP3 INTEGER,\n" +
+                    "    REP4 INTEGER, REP5 INTEGER, REP6 INTEGER,\n" +
+                    "    WORKOUT_ID INTEGER,\n" +
+                    "    FOREIGN KEY(WORKOUT_ID) REFERENCES WORKOUT(ID)\n" +
+                    "    )";
+                    db.execSQL(createSQL);
+
+            createSQL = "CREATE TABLE IF NOT EXISTS PROGRESS_HISTORY(\n" +
+                    "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                    "    EXERCISE_ID INTEGER,\n" +
+                    "    USER_ID INTEGER,\n" +
+                    "    WEIGHT REAL,\n" +
+                    "    DATE_COMPLETED DATE,\n" +
+                    "    FOREIGN KEY (EXERCISE_ID) REFERENCES EXERCISE(ID),\n" +
+                    "    FOREIGN KEY (USER_ID) REFERENCES USER(ID)\n" +
+                    "    )";
+                    db.execSQL(createSQL);
+
+            createSQL = "CREATE TABLE IF NOT EXISTS REPORT(\n" +
+                    "    ID INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                    "    COMMENT TEXT\n" +
+                    "    )";
+            db.execSQL(createSQL);
+        }catch (SQLiteException ex){
+            Log.e(TAG, "OnCreate: " + ex.getMessage());
+        }
     }
 
     // Overridden method to handle upgrades to the database, if any.

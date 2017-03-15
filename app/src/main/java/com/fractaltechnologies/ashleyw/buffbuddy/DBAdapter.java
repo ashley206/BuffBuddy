@@ -88,6 +88,21 @@ public class DBAdapter {
         return exists;
     }
 
+    public int getUserId(String email){
+        int userId = -1;
+        try {
+            SQLiteDatabase db = new SQLiteHelper(m_context).getReadableDatabase();
+            Cursor c = db.rawQuery("SELECT ID FROM USER WHERE EMAIL = ?", new String[] {email});
+            if(c.moveToFirst()){
+                userId = c.getInt(c.getColumnIndex("ID"));
+            }
+        }
+        catch (SQLiteException ex){
+            Log.e("TAG", "EXCEPTION: " + ex.getMessage());
+        }
+        return userId;
+    }
+
     public User GoogleLogin(String email){
         User user = null;
         SQLiteDatabase db = new SQLiteHelper(m_context).getReadableDatabase();
@@ -137,14 +152,14 @@ public class DBAdapter {
         return user;
     }
 
-    public boolean GoogleRegister(String email){
-        boolean success = false;
+    public int GoogleRegister(String email){
+        int userId = -1;
         try {
             // We must ensure that this is a unique entry in the database
             SQLiteDatabase db = new SQLiteHelper(m_context).getWritableDatabase();
             String sql = "SELECT EMAIL FROM USER WHERE EMAIL = ?";
             Cursor c = db.rawQuery(sql, new String[] { email });
-            // Ensure no values exist
+            // TODO: Ensure no values exist. This was MAJORLY breaking the emulator but never had issue on actual phone.
             if (!c.moveToFirst()) {
                 ContentValues values = new ContentValues();
                 values.put("FIRSTNAME", "");
@@ -154,36 +169,41 @@ public class DBAdapter {
                 values.put("PASSWORD", "");
                 values.put("GOOGLEACCOUNT", 1);
                 db.insert("USER", null, values);
-                success = true;
             }
             c.close();
         }catch (Exception ex){
             Log.e("TAG", "EXCEPTION MESSAGE: " + ex.getMessage());
         }
-        return success;
+        return userId;
     }
 
     public boolean Register(String username, String email, String password, String fName, String lName ){
         boolean success = false;
         try {
             // We must ensure that this is a unique entry in the database
-            SQLiteDatabase db = new SQLiteHelper(m_context).getWritableDatabase();
-            String sql = String.format("SELECT EMAIL FROM USER WHERE EMAIL = '%s'", username);
-            Cursor c = db.rawQuery(sql, null);
+            db = new SQLiteHelper(m_context).getReadableDatabase();
+
+            //Cursor c = db.query("USER", new String[] {"EMAIL"}, "EMAIL = ?", new String[] { email }, null, null, null ); //rawQuery("SELECT EMAIL FROM USER WHERE EMAIL = '" + email + "'", null);
             // Ensure no values exist
-            if (!c.moveToFirst()) {
+            //if (!(c.moveToFirst()) || c.getCount() == 0) {
+                db = new SQLiteHelper(m_context).getWritableDatabase();
+                db.beginTransaction();
                 ContentValues values = new ContentValues();
                 values.put("FIRSTNAME", fName);
                 values.put("LASTNAME", lName);
                 values.put("USERNAME", username);
                 values.put("EMAIL", email);
                 values.put("PASSWORD", password);
-                db.insert("USER", null, values);
-                success = true;
-            }
-            c.close();
+                values.put("GOOGLEACCOUNT", 0);
+                db.insertOrThrow("USER", null, values);
+                db.setTransactionSuccessful();
+            //}
+            success = true;
         }catch (Exception ex){
             Log.e("TAG", "EXCEPTION MESSAGE: " + ex.getMessage());
+        }
+        finally {
+            db.endTransaction();
         }
         return success;
     }

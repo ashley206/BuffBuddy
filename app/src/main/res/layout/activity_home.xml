@@ -18,5 +18,12 @@
         android:onClick="BeginWorkout"
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Exercise Progress"
+        android:onClick="ExerciseProgressReport"
+        />
+
 
 </LinearLayout>
