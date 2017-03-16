@@ -46,10 +46,10 @@ public class MainActivity extends AppCompatActivity
         SQLiteHelper helper = new SQLiteHelper(this);
         //this.deleteDatabase(helper.getDatabaseName());
 
-//        DBAdapter dbAdapter = new DBAdapter(this);
-//        Cursor c = dbAdapter.openRead().getDBInstance().rawQuery("SELECT * FROM USER", null);
-//        c.moveToFirst();
-//        int id = c.getInt(c.getColumnIndex("ID"));
+        DBAdapter dbAdapter = new DBAdapter(this);
+        Cursor c = dbAdapter.openRead().getDBInstance().rawQuery("SELECT * FROM PROGRESS_HISTORY", null);
+        c.moveToFirst();
+        int id = c.getInt(c.getColumnIndex("WEIGHT"));
 //        c = dbAdapter.openRead().getDBInstance().rawQuery("SELECT * FROM WORKOUT WHERE USER_ID = ?", new String[] {String.valueOf(id)});
 //        c.moveToFirst();
 //        String name = c.getString(c.getColumnIndex("NAME"));

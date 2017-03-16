@@ -109,4 +109,9 @@ public class Exercise implements Serializable {
     public Exercise SelectExercise() {
         return this;
     }
+
+    @Override
+    public String toString() {
+        return this.m_name;
+    }
 }
