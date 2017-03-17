@@ -3,7 +3,6 @@ package com.fractaltechnologies.ashleyw.buffbuddy;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -42,6 +43,7 @@ public class LoginActivity extends AppCompatActivity
         setContentView(R.layout.activity_login);
 
         // Create instance of SQLite database
+        SQLiteDatabase.loadLibs(this);
         db = new DBAdapter(this);
         db = db.openWrite();
     }

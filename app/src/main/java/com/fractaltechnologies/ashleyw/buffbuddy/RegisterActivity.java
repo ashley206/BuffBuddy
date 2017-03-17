@@ -1,5 +1,6 @@
 package com.fractaltechnologies.ashleyw.buffbuddy;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -70,6 +71,8 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(RegisterActivity.this, "Successful registration!", Toast.LENGTH_SHORT).show();
                 int id = User.GetIDFromDatabase(email, dbAdapter);
                 InsertDefaultInformation(id);
+
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             } else {
                 Toast.makeText(RegisterActivity.this, "Failed to register. Try again.", Toast.LENGTH_LONG).show();
             }

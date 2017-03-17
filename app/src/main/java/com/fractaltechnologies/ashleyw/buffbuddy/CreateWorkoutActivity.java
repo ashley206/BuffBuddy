@@ -34,6 +34,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
             try {
                 Intent i = new Intent(CreateWorkoutActivity.this, EditWorkoutActivity.class);
                 i.putExtra("Workout", workout);
+                i.putExtra("User", user);
                 startActivity(i);
             }catch (Exception ex){
                 String exc = ex.getMessage();

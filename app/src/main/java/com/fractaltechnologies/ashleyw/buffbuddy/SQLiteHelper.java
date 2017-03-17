@@ -2,23 +2,25 @@ package com.fractaltechnologies.ashleyw.buffbuddy;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.content.res.AssetManager;
+
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
+import net.sqlcipher.SQLException;
+import net.sqlcipher.Cursor;
+import net.sqlcipher.DatabaseUtils;
+import net.sqlcipher.database.SQLiteException;
 
 import java.io.*;
-import java.util.List;
-import java.util.Vector;
 
 /**
  * Created by Ashley H on 1/19/2017.
  */
 
 public class SQLiteHelper extends SQLiteOpenHelper {
+
+    private final static String passphrase = "b4h5d231963";
 
     private final static String TAG = "SQLiteHelper";
     private static String DATABASE_PATH = "/data/user/0/com.fractaltechnologies.ashleyw.buffbuddy/databases/";
@@ -29,20 +31,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public SQLiteHelper(Context context ){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         m_context = context;
-    }
-
-    public void createDatabase() throws IOException {
-        boolean dbExists = databaseExists();
-        // We only care if the database doesn't exist
-        if(!dbExists){
-            this.getReadableDatabase();
-            try{
-                // This imports the default database into the system
-                importDatabase();
-            }catch (IOException e){
-                Log.e("TAG", "EXCEPTION: " + e.getMessage());
-            }
-        }
     }
 
     // Overridden method to create the sql database tables necessary
@@ -187,7 +175,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = null;
         try{
             String path = DATABASE_PATH + DATABASE_NAME;
-            db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
+            db = SQLiteDatabase.openDatabase(path, passphrase, null, SQLiteDatabase.OPEN_READONLY);
         }catch(SQLiteException e){
             Log.e("TAG", "EXCEPTION: " + e.getMessage());
         }
@@ -200,15 +188,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public boolean tableExists(String tableName, boolean openDb) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase(passphrase);
         if(openDb) {
             if(db == null || !db.isOpen()) {
-                db = getReadableDatabase();
+                db = getReadableDatabase(passphrase);
             }
 
             if(!db.isReadOnly()) {
                 db.close();
-                db = getReadableDatabase();
+                db = getReadableDatabase(passphrase);
             }
         }
         boolean exists = false;
@@ -217,9 +205,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             if(cursor.getCount()>0) {
                 exists = true;
             }
-            cursor.close();
         }
+        cursor.close();
         return exists;
     }
+
+    public String getPassphrase(){
+        return passphrase;
+    }
+
 
 }

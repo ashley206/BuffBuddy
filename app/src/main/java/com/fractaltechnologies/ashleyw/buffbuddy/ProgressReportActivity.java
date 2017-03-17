@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -50,7 +51,7 @@ public class ProgressReportActivity extends AppCompatActivity {
 
         // Create an ArrayAdapter using the the default spinner layout
         ArrayAdapter<Exercise> adapter = new ArrayAdapter<Exercise>(
-                getApplicationContext(),
+                this,
                 R.layout.support_simple_spinner_dropdown_item,
                 exercises);
         // Specifying the layout to use when the list of choices appears
@@ -120,11 +121,29 @@ public class ProgressReportActivity extends AppCompatActivity {
                 graphView.setVisibility(View.INVISIBLE);
                 tvNoData.setVisibility(View.VISIBLE);
             }
+            c.close();
         }
         catch (Exception ex){
             Log.e(TAG, "InitializeGraph: " + ex.getMessage());
         }
         // Graph the information
         graphView.addSeries(series);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            onBackPressed();
+            Intent i = getIntent();
+            User user = (User)i.getSerializableExtra("User");
+            i = new Intent(ProgressReportActivity.this, HomeActivity.class);
+            i.putExtra("User", user);
+            startActivity(i);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
